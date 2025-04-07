@@ -45,4 +45,9 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function userGroup()
+    {
+        return $this->belongsTo(UserGroup::class);
+    }
 }

@@ -25,4 +25,15 @@ export default defineConfig({
             vue: 'vue/dist/vue.esm-bundler.js',
         },
     },
+    server: {
+        host: "0.0.0.0",
+        port: 6969,
+        hmr: {
+            host: 'recipe.api',
+            port: 6969
+        },
+        cors: {
+            origin: "*",
+        },
+    },
 });

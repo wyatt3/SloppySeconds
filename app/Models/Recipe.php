@@ -4,12 +4,17 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Collection;
 
+/**
+ * @property-read \Illuminate\Support\Collection<int, \App\Models\Direction> $orderedDirections
+ */
 class Recipe extends Model
 {
     protected $table = 'recipes';
 
-    protected $appends = ['directions'];
+    /** @var list<string> $appends */
+    protected $appends = ['orderedDirections'];
 
     protected $fillable = [
         'name',
@@ -33,7 +38,7 @@ class Recipe extends Model
      *
      * @return Collection<int, Direction>
      */
-    public function getDirectionsAttribute()
+    public function getOrderedDirectionsAttribute(): Collection
     {
         return $this->directions()->orderBy('order')->get();
     }

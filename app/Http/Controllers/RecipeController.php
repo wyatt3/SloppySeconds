@@ -6,12 +6,12 @@ use App\Models\Recipe;
 
 class RecipeController extends Controller
 {
-    public function index()
+    public function index(): void
     {
         return;
     }
 
-    public function show(Recipe $recipe)
+    public function show(Recipe $recipe): void
     {
         return;
     }

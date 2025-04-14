@@ -4,9 +4,14 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
+/**
+ * @method static create(array<string, mixed> $array)
+ */
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
@@ -46,8 +51,23 @@ class User extends Authenticatable
         ];
     }
 
-    public function userGroup()
+    /**
+     * Get the user group that owns the user.
+     *
+     * @return BelongsTo<UserGroup, $this>
+     */
+    public function userGroup(): BelongsTo
     {
         return $this->belongsTo(UserGroup::class);
+    }
+
+    /**
+     * Get the recipes for the user.
+     *
+     * @return HasManyThrough<Recipe, UserGroup, $this>
+     */
+    public function recipes(): HasManyThrough
+    {
+        return $this->hasManyThrough(Recipe::class, UserGroup::class, 'user_group_id', 'user_group_id', 'id', 'id');
     }
 }

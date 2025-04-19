@@ -2,9 +2,13 @@
 
 namespace Database\Seeders;
 
+use App\Models\Direction;
+use App\Models\Recipe;
 use App\Models\User;
+use App\Models\UserGroup;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -13,11 +17,19 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        $userGroup = UserGroup::factory()->create();
 
-        User::factory()->create([
+        $user = User::factory()->for($userGroup)->create([
             'name' => 'Test User',
-            'email' => 'test@example.com',
+            'email' => 'test@test.com',
+            'password' => Hash::make('1234')
         ]);
+
+        Recipe::factory()
+            ->count(3)
+            ->for($userGroup)
+            ->has(
+                Direction::factory()->count(3)
+            )->create();
     }
 }

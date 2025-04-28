@@ -81,9 +81,17 @@ class RecipeService
     public function delete(Recipe $recipe): void
     {
         $recipe->delete();
-        $recipe->directions()->delete();
+        $recipe->directions()->each(fn($direction) => $this->deleteDirection($direction));
         if ($recipe->image) {
             Storage::disk('recipeImages')->delete($recipe->image);
+        }
+    }
+
+    public function deleteDirection($direction): void
+    {
+        $direction->delete();
+        if ($direction->image) {
+            Storage::disk('recipeImages')->delete($direction->image);
         }
     }
 }

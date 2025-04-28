@@ -7,9 +7,15 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Storage;
 
 /**
+ * @property string $name
+ * @property string $description
+ * @property ?string $image
+ * @property int $user_group_id
  * @property-read \Illuminate\Support\Collection<int, \App\Models\Direction> $orderedDirections
+ * @property-read string $imagePath
  */
 class Recipe extends Model
 {
@@ -19,7 +25,7 @@ class Recipe extends Model
     protected $table = 'recipes';
 
     /** @var list<string> $appends */
-    protected $appends = ['orderedDirections'];
+    protected $appends = ['orderedDirections', 'imagePath'];
 
     protected $fillable = [
         'name',
@@ -56,5 +62,15 @@ class Recipe extends Model
     public function getOrderedDirectionsAttribute(): Collection
     {
         return $this->directions()->orderBy('order')->get();
+    }
+
+    /**
+     * Get the image path
+     *
+     * @return string
+     */
+    public function getImagePathAttribute(): string
+    {
+        return route('recipe.image', ['recipe' => $this->getKey()]);
     }
 }

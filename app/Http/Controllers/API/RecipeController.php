@@ -31,4 +31,18 @@ class RecipeController extends Controller
     {
         return response($recipe);
     }
+
+    public function storeRecipe() {}
+
+    public function updateRecipe() {}
+
+    public function deleteRecipe() {}
+
+    public function storeDirection() {}
+
+    public function updateDirection() {}
+
+    public function updateDirectionOrders() {}
+
+    public function deleteDirection() {}
 }

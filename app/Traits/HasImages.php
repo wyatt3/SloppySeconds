@@ -23,6 +23,7 @@ trait HasImages
         imagefill($im, 0, 0, $bgColor);
 
         $path = Storage::disk($disk)->path($fileName . '.jpg');
+        Storage::disk($disk)->put($fileName . '.jpg', '');
         imagejpeg($im, $path);
         imagedestroy($im);
 

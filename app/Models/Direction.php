@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * @property Recipe $recipe
+ */
 class Direction extends Model
 {
     /** @use \Illuminate\Database\Eloquent\Factories\HasFactory<\Database\Factories\DirectionFactory> */

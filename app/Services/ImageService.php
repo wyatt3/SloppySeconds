@@ -33,6 +33,6 @@ class ImageService
         if (!$direction->image) {
             return null;
         }
-        return Storage::disk('recipeImages')->path('directions/' . $direction->image);
+        return Storage::disk('recipeImages')->path($direction->image);
     }
 }

@@ -4,11 +4,14 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\Recipe;
+use App\Services\RecipeService;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 
 class RecipeController extends Controller
 {
+
+    public function __construct(private RecipeService $recipeService) {}
     /**
      * Get all recipes that the user has access to
      *
@@ -18,7 +21,7 @@ class RecipeController extends Controller
     {
         /** @var \App\Models\User $user */
         $user = Auth::user();
-        return response($user->recipes()->get());
+        return response($user->recipes()->orderBy('name')->get());
     }
 
     /**
@@ -36,13 +39,9 @@ class RecipeController extends Controller
 
     public function updateRecipe() {}
 
-    public function deleteRecipe() {}
-
-    public function storeDirection() {}
-
-    public function updateDirection() {}
-
-    public function updateDirectionOrders() {}
-
-    public function deleteDirection() {}
+    public function deleteRecipe(Recipe $recipe): Response
+    {
+        $this->recipeService->deleteRecipe($recipe);
+        return response()->noContent();
+    }
 }

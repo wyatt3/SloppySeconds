@@ -68,6 +68,6 @@ class User extends Authenticatable
      */
     public function recipes(): HasManyThrough
     {
-        return $this->hasManyThrough(Recipe::class, UserGroup::class, 'user_group_id', 'user_group_id', 'id', 'id');
+        return $this->hasManyThrough(Recipe::class, UserGroup::class, 'id', 'user_group_id', 'user_group_id', 'id');
     }
 }

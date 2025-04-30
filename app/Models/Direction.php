@@ -49,6 +49,6 @@ class Direction extends Model
      */
     public function getImagePathAttribute(): ?string
     {
-        return route('direction.image', ['direction' => $this->getKey()]);
+        return route('direction.image', ['recipe' => $this->recipe_id, 'direction' => $this->getKey()]);
     }
 }

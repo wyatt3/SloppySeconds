@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class EnsureUserCanAccessImage
+class EnsureUserOwnsRecipe
 {
     /**
      * Handle an incoming request.
@@ -18,15 +18,10 @@ class EnsureUserCanAccessImage
     {
         /** @var ?\App\Models\User $user */
         $user = $request->user();
-        /** @var ?\App\Models\Recipe $recipe */
+        /** @var \App\Models\Recipe $recipe */
         $recipe = $request->route('recipe');
-        /** @var ?\App\Models\Direction $direction */
-        $direction = $request->route('direction');
 
-        if ($direction && ($direction->recipe->user_group_id !== $user?->user_group_id)) {
-            return abort(Response::HTTP_NOT_FOUND);
-        }
-        if ($recipe && ($recipe->user_group_id !== $user?->user_group_id)) {
+        if ($recipe->user_group_id !== $user?->user_group_id) {
             return abort(Response::HTTP_NOT_FOUND);
         }
 

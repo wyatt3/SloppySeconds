@@ -10,7 +10,7 @@ Route::get('/user', function (Request $request) {
 Route::prefix('recipes')->group(function () {
     Route::get('/', [App\Http\Controllers\API\RecipeController::class, 'index'])->name('api.recipes.index');
     Route::get('/{recipe}', [App\Http\Controllers\API\RecipeController::class, 'show'])->name('api.recipes.show');
-    Route::post('/', [App\Http\Controllers\API\RecipeController::class, 'storeRecipe'])->name('api.recipes.store');
-    Route::put('/{recipe}', [App\Http\Controllers\API\RecipeController::class, 'updateRecipe'])->name('api.recipes.update');
-    Route::delete('/{recipe}', [App\Http\Controllers\API\RecipeController::class, 'deleteRecipe'])->name('api.recipes.delete');
+    Route::post('/', [App\Http\Controllers\API\RecipeController::class, 'store'])->name('api.recipes.store');
+    Route::put('/{recipe}', [App\Http\Controllers\API\RecipeController::class, 'update'])->name('api.recipes.update');
+    Route::delete('/{recipe}', [App\Http\Controllers\API\RecipeController::class, 'delete'])->name('api.recipes.delete');
 });

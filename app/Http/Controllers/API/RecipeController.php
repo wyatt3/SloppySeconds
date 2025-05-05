@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CreateRecipeRequest;
+use App\Http\Requests\UpdateRecipeRequest;
 use App\Models\Recipe;
 use App\Services\RecipeService;
 use Illuminate\Http\Response;
@@ -35,11 +37,33 @@ class RecipeController extends Controller
         return response($recipe);
     }
 
-    public function storeRecipe() {}
+    public function store(CreateRecipeRequest $request): Response
+    {
+        /** @var string $name */
+        $name = $request->input('name');
+        /** @var string $description */
+        $description = $request->input('description');
+        /** @var ?\Illuminate\Http\UploadedFile $image */
+        $image = $request->file('image');
+        /** @var \App\Models\UserGroup $userGroup */
+        $userGroup = Auth::user()->userGroup;
+        $recipe = $this->recipeService->createRecipe($name, $description, $image, $userGroup);
+        return response($recipe, 201);
+    }
 
-    public function updateRecipe() {}
+    public function update(Recipe $recipe, UpdateRecipeRequest $request)
+    {
+        /** @var ?string $name */
+        $name = $request->input('name');
+        /** @var ?string $description */
+        $description = $request->input('description');
+        /** @var ?\Illuminate\Http\UploadedFile $image */
+        $image = $request->file('image');
+        $recipe = $this->recipeService->updateRecipe($recipe, $name, $description, $image);
+        return response($recipe);
+    }
 
-    public function deleteRecipe(Recipe $recipe): Response
+    public function delete(Recipe $recipe): Response
     {
         $this->recipeService->deleteRecipe($recipe);
         return response()->noContent();

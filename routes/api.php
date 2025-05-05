@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\EnsureUserOwnsRecipe;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -9,8 +10,18 @@ Route::get('/user', function (Request $request) {
 
 Route::prefix('recipes')->group(function () {
     Route::get('/', [App\Http\Controllers\API\RecipeController::class, 'index'])->name('api.recipes.index');
-    Route::get('/{recipe}', [App\Http\Controllers\API\RecipeController::class, 'show'])->name('api.recipes.show');
     Route::post('/', [App\Http\Controllers\API\RecipeController::class, 'store'])->name('api.recipes.store');
-    Route::put('/{recipe}', [App\Http\Controllers\API\RecipeController::class, 'update'])->name('api.recipes.update');
-    Route::delete('/{recipe}', [App\Http\Controllers\API\RecipeController::class, 'delete'])->name('api.recipes.delete');
+
+    Route::prefix('{recipe}')->middleware(EnsureUserOwnsRecipe::class)->group(function () {
+        Route::get('/', [App\Http\Controllers\API\RecipeController::class, 'show'])->name('api.recipes.show');
+        Route::put('/', [App\Http\Controllers\API\RecipeController::class, 'update'])->name('api.recipes.update');
+        Route::delete('/', [App\Http\Controllers\API\RecipeController::class, 'delete'])->name('api.recipes.delete');
+
+        Route::prefix('/directions')->middleware(EnsureUserOwnsRecipe::class)->group(function () {
+            Route::put('/orders', [App\Http\Controllers\API\DirectionController::class, 'updateOrders'])->name('api.directions.update-orders');
+            Route::post('/', [App\Http\Controllers\API\DirectionController::class, 'store'])->name('api.directions.store');
+            Route::put('/{direction}', [App\Http\Controllers\API\DirectionController::class, 'update'])->name('api.directions.update');
+            Route::delete('/{direction}', [App\Http\Controllers\API\DirectionController::class, 'delete'])->name('api.directions.delete');
+        });
+    });
 });

@@ -18,7 +18,7 @@ class ImageController extends Controller
         return response()->file($this->imageService->getRecipeImage($recipe));
     }
 
-    public function getDirectionImage(Direction $direction): BinaryFileResponse
+    public function getDirectionImage(Recipe $recipe, Direction $direction): BinaryFileResponse
     {
         /** @var ?string $file */
         $file = $this->imageService->getDirectionImage($direction);

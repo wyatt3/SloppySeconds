@@ -9,7 +9,10 @@ use Illuminate\Support\Facades\Storage;
 
 class RecipeService
 {
-    public function __construct(private DirectionService $directionService) {}
+    public function __construct(
+        private DirectionService $directionService,
+        private IngredientService $ingredientService
+    ) {}
 
     /**
      * Create a recipe
@@ -87,6 +90,7 @@ class RecipeService
     {
         $recipe->delete();
         $recipe->directions()->each(fn($direction) => $this->directionService->deleteDirection($direction));
+        $recipe->ingredients()->each(fn($ingredient) => $this->ingredientService->deleteIngredient($ingredient));
         if ($recipe->image) {
             Storage::disk('recipeImages')->delete($recipe->image);
         }

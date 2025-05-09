@@ -18,6 +18,7 @@ return new class extends Migration
             $table->integer('recipe_id');
             $table->float('amount');
             $table->string('unit');
+            $table->integer('order');
         });
     }
 

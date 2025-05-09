@@ -22,6 +22,7 @@ class IngredientFactory extends Factory
             'recipe_id' => Recipe::factory(),
             'amount' => $this->faker->numberBetween(1, 10),
             'unit' => $this->faker->word(),
+            'order' => $this->faker->numberBetween(1, 10),
         ];
     }
 }

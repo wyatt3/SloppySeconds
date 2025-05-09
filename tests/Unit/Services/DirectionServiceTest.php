@@ -56,9 +56,8 @@ class DirectionServiceTest extends TestCase
         $direction = Direction::factory()->create(['order' => 0]);
         $order = 1;
 
-        $direction = $this->service->updateDirectionOrder($direction, $order);
+        $this->service->updateDirectionOrder($direction, $order);
 
-        $this->assertEquals($order, $direction->order);
         $this->assertDatabaseHas('directions', [
             'id' => $direction->getKey(),
             'order' => $order

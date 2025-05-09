@@ -24,7 +24,7 @@ class Recipe extends Model
     protected $table = 'recipes';
 
     /** @var list<string> $appends */
-    protected $appends = ['orderedDirections', 'imagePath'];
+    protected $appends = ['orderedDirections', 'orderedIngredients', 'imagePath'];
 
     protected $fillable = [
         'name',
@@ -54,6 +54,16 @@ class Recipe extends Model
     }
 
     /**
+     * Get all of the ingredients for the recipe.
+     *
+     * @return HasMany<Ingredient, $this>
+     */
+    public function ingredients(): HasMany
+    {
+        return $this->hasMany(Ingredient::class);
+    }
+
+    /**
      * Get all of the directions for the recipe in order.
      *
      * @return Collection<int, Direction>
@@ -61,6 +71,16 @@ class Recipe extends Model
     public function getOrderedDirectionsAttribute(): Collection
     {
         return $this->directions()->orderBy('order')->get();
+    }
+
+    /**
+     * Get all of the ingredients for the recipe in order.
+     *
+     * @return Collection<int, Ingredient>
+     */
+    public function getOrderedIngredientsAttribute(): Collection
+    {
+        return $this->ingredients()->orderBy('order')->get();
     }
 
     /**

@@ -21,11 +21,10 @@ class DirectionService
     public function createDirection(string $content, ?UploadedFile $image, Recipe $recipe): Direction
     {
         /** @var int $order */
-        $order = $recipe->directions()->max('order');
-        $direction = Direction::create([
+        $order = $recipe->directions()->max('order') ?? 0;
+        $direction = $recipe->directions()->create([
             'content' => $content,
             'image' => null,
-            'recipe_id' => $recipe->getKey(),
             'order' =>  $order + 1,
         ]);
 
@@ -80,13 +79,11 @@ class DirectionService
      *
      * @param Direction $direction
      * @param integer $order
-     * @return Direction
+     * @return void
      */
-    public function updateDirectionOrder(Direction $direction, int $order): Direction
+    public function updateDirectionOrder(Direction $direction, int $order): void
     {
         $direction->update(['order' => $order]);
-
-        return $direction;
     }
 
     /**

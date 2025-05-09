@@ -17,7 +17,8 @@ class Ingredient extends Model
         'name',
         'recipe_id',
         'amount',
-        'unit'
+        'unit',
+        'order'
     ];
 
     /**

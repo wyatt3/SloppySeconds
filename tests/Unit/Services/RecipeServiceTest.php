@@ -3,7 +3,10 @@
 namespace Tests\Unit\Services;
 
 use App\Models\Direction;
+use App\Models\Ingredient;
 use App\Models\Recipe;
+use App\Services\DirectionService;
+use App\Services\IngredientService;
 use App\Services\RecipeService;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
@@ -12,9 +15,14 @@ use Tests\TestCase;
 class RecipeServiceTest extends TestCase
 {
     private $service;
+    private $mockDirectionService;
+    private $mockIngredientService;
+
     public function setUp(): void
     {
         parent::setUp();
+        $this->mockDirectionService = $this->mock(DirectionService::class);
+        $this->mockIngredientService = $this->mock(IngredientService::class);
         $this->service = $this->partialMockWithConstructor(RecipeService::class);
     }
 
@@ -58,9 +66,14 @@ class RecipeServiceTest extends TestCase
 
     public function testDeleteRecipe(): void
     {
+        $this->mockDirectionService->shouldReceive('deleteDirection')->once();
+        $this->mockIngredientService->shouldReceive('deleteIngredient')->once();
         Storage::fake('recipeImages');
         Storage::disk('recipeImages')->put('image.jpg', '');
-        $recipe = Recipe::factory()->create();
+        $recipe = Recipe::factory()
+            ->has(Direction::factory(), 'directions')
+            ->has(Ingredient::factory(), 'ingredients')
+            ->create();
         $this->service->deleteRecipe($recipe);
         $this->assertDatabaseMissing('recipes', ['id' => $recipe->getKey()]);
         Storage::disk('recipeImages')->assertMissing($recipe->image);

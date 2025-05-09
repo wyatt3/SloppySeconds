@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Controllers;
 
+use App\Enums\RecipeType;
 use App\Models\Recipe;
 use App\Services\RecipeService;
 use Illuminate\Http\UploadedFile;
@@ -49,6 +50,7 @@ class RecipeControllerTest extends TestCase
             'name' => $this->faker->word(),
             'description' => $this->faker->sentence(),
             'image' => UploadedFile::fake()->image('image.jpg'),
+            'type' => $this->faker->randomElement(RecipeType::cases())->name
         ]);
 
         $response->assertStatus(201);
@@ -65,6 +67,7 @@ class RecipeControllerTest extends TestCase
             'name' => $this->faker->word(),
             'description' => $this->faker->sentence(),
             'image' => UploadedFile::fake()->image('image.jpg'),
+            'type' => $this->faker->randomElement(RecipeType::cases())->name
         ]);
 
         $response->assertStatus(200);

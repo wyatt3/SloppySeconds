@@ -18,6 +18,7 @@ return new class extends Migration
             $table->text('description');
             $table->string('image')->nullable();
             $table->integer('user_group_id');
+            $table->string('type');
         });
     }
 

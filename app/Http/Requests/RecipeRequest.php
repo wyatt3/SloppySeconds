@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\RecipeType;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class RecipeRequest extends FormRequest
 {
@@ -25,6 +27,7 @@ class RecipeRequest extends FormRequest
             'name' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string'],
             'image' => ['nullable', 'image'],
+            'type' => ['required', 'string', Rule::in(array_map(fn($case) => $case->name, RecipeType::cases())),]
         ];
     }
 }

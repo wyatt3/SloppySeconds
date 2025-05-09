@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Services;
 
+use App\Enums\RecipeType;
 use App\Models\Direction;
 use App\Models\Ingredient;
 use App\Models\Recipe;
@@ -32,10 +33,11 @@ class RecipeServiceTest extends TestCase
         $name = $this->faker->word();
         $description = $this->faker->sentence();
         $image = UploadedFile::fake()->image('image.jpg');
+        $type = $this->faker->randomElement(RecipeType::cases());
 
         $userGroup = $this->user->userGroup;
 
-        $recipe = $this->service->createRecipe($name, $description, $image, $userGroup);
+        $recipe = $this->service->createRecipe($name, $description, $image, $userGroup, $type);
 
         $this->assertDatabaseHas('recipes', [
             'name' => $name,
@@ -53,8 +55,9 @@ class RecipeServiceTest extends TestCase
         $name = $this->faker->word();
         $description = $this->faker->sentence();
         $image = UploadedFile::fake()->image('image.jpg');
+        $type = $this->faker->randomElement(RecipeType::cases());
 
-        $recipe = $this->service->updateRecipe($recipe, $name, $description, $image);
+        $recipe = $this->service->updateRecipe($recipe, $name, $description, $image, $type);
 
         $this->assertDatabaseHas('recipes', [
             'name' => $name,

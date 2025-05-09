@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Enums\RecipeType;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\RecipeRequest;
 use App\Models\Recipe;
@@ -54,7 +55,11 @@ class RecipeController extends Controller
         $user = Auth::user();
         /** @var \App\Models\UserGroup $userGroup */
         $userGroup = $user->userGroup;
-        $recipe = $this->recipeService->createRecipe($name, $description, $image, $userGroup);
+        /** @var string $type */
+        $type = $request->input('type');
+        /** @var RecipeType $typeEnum */
+        $typeEnum = RecipeType::tryFrom($type);
+        $recipe = $this->recipeService->createRecipe($name, $description, $image, $userGroup, $typeEnum);
         return response($recipe, 201);
     }
 
@@ -73,7 +78,11 @@ class RecipeController extends Controller
         $description = $request->input('description');
         /** @var ?\Illuminate\Http\UploadedFile $image */
         $image = $request->file('image');
-        $recipe = $this->recipeService->updateRecipe($recipe, $name, $description, $image);
+        /** @var string $type */
+        $type = $request->input('type');
+        /** @var RecipeType $typeEnum */
+        $typeEnum = RecipeType::tryFrom($type);
+        $recipe = $this->recipeService->updateRecipe($recipe, $name, $description, $image, $typeEnum);
         return response($recipe);
     }
 

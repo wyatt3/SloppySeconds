@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\RecipeType;
 use App\Models\UserGroup;
 use App\Traits\HasImages;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -19,11 +20,14 @@ class RecipeFactory extends Factory
      */
     public function definition(): array
     {
+        /** @var RecipeType $type */
+        $type = $this->faker->randomElement(RecipeType::cases());
         return [
             'name' => $this->faker->words(3, true),
             'description' => $this->faker->sentence(),
             'image' => $this->saveRandomImage('recipeImages', $this->faker->word()),
             'user_group_id' => UserGroup::factory(),
+            'type' => $type->name,
         ];
     }
 }

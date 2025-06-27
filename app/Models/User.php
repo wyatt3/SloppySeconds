@@ -11,6 +11,7 @@ use Illuminate\Notifications\Notifiable;
 
 /**
  * @method static create(array<string, mixed> $array)
+ * @property UserGroup $userGroup
  */
 class User extends Authenticatable
 {
@@ -69,5 +70,15 @@ class User extends Authenticatable
     public function recipes(): HasManyThrough
     {
         return $this->hasManyThrough(Recipe::class, UserGroup::class, 'id', 'user_group_id', 'user_group_id', 'id');
+    }
+
+    /**
+     * Get the meals for the user.
+     *
+     * @return HasManyThrough<Meal, UserGroup, $this>
+     */
+    public function meals(): HasManyThrough
+    {
+        return $this->hasManyThrough(Meal::class, UserGroup::class, 'id', 'user_group_id', 'user_group_id', 'id');
     }
 }

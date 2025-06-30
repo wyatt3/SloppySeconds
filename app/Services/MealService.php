@@ -17,6 +17,13 @@ class MealService
         ]);
     }
 
+    public function updateMeal(Meal $meal, Carbon $date): void
+    {
+        $meal->update([
+            'date' => $date
+        ]);
+    }
+
     /**
      * Add a recipe to a meal
      *

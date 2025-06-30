@@ -23,7 +23,6 @@ class MealRequest extends FormRequest
     {
         return [
             'date' => ['required', 'date'],
-            'user_group_id' => ['required', 'integer', 'exists:user_groups,id'],
         ];
     }
 }

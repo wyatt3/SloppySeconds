@@ -10,6 +10,7 @@ use App\Models\Recipe;
 use App\Models\User;
 use App\Services\MealService;
 use Illuminate\Http\Response;
+use Illuminate\Support\Carbon;
 
 class MealController extends Controller
 {
@@ -40,6 +41,17 @@ class MealController extends Controller
     }
 
     /**
+     * Show a single meal
+     *
+     * @param Meal $meal
+     * @return Response
+     */
+    public function show(Meal $meal): Response
+    {
+        return response($meal->load('recipes'));
+    }
+
+    /**
      * Store a newly created resource in storage.
      *
      * @param MealRequest $request
@@ -47,14 +59,36 @@ class MealController extends Controller
      */
     public function store(MealRequest $request): Response
     {
+        /** @var string $dateString */
+        $dateString = $request->input('date');
         /** @var \Illuminate\Support\Carbon $date */
-        $date = $request->input('date');
+        $date = Carbon::parse($dateString);
+
         /** @var User $user */
         $user = $request->user();
 
         $meal = $this->mealService->createMeal($date, $user->userGroup);
 
         return response($meal, 201);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param MealRequest $request
+     * @param Meal $meal
+     * @return Response
+     */
+    public function update(MealRequest $request, Meal $meal): Response
+    {
+        /** @var string $dateString */
+        $dateString = $request->input('date');
+        /** @var \Illuminate\Support\Carbon $date */
+        $date = Carbon::parse($dateString);
+
+        $this->mealService->updateMeal($meal, $date);
+
+        return response($meal->fresh());
     }
 
     /**

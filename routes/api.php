@@ -8,6 +8,16 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
+Route::prefix('meals')->group(function () {
+    Route::get('/', [App\Http\Controllers\API\MealController::class, 'index'])->name('api.meals.index');
+    Route::post('/', [App\Http\Controllers\API\MealController::class, 'store'])->name('api.meals.store');
+    Route::put('/{meal}', [App\Http\Controllers\API\MealController::class, 'update'])->name('api.meals.update');
+    Route::get('/{meal}', [App\Http\Controllers\API\MealController::class, 'show'])->name('api.meals.show');
+    Route::delete('/{meal}', [App\Http\Controllers\API\MealController::class, 'destroy'])->name('api.meals.destroy');
+    Route::post('/{meal}/recipes/{recipe}', [App\Http\Controllers\API\MealController::class, 'addRecipe'])->name('api.meals.add-recipe');
+    Route::delete('/{meal}/recipes/{recipe}', [App\Http\Controllers\API\MealController::class, 'removeRecipe'])->name('api.meals.remove-recipe');
+});
+
 Route::prefix('recipes')->group(function () {
     Route::get('/', [App\Http\Controllers\API\RecipeController::class, 'index'])->name('api.recipes.index');
     Route::post('/', [App\Http\Controllers\API\RecipeController::class, 'store'])->name('api.recipes.store');

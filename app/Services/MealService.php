@@ -13,7 +13,7 @@ class MealService
     {
         return Meal::create([
             'date' => $date,
-            'user_group_id' => $userGroup->id,
+            'user_group_id' => $userGroup->getKey(),
         ]);
     }
 

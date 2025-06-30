@@ -29,7 +29,9 @@ class MealControllerTest extends TestCase
 
     public function testShow()
     {
-        $meal = Meal::factory()->create();
+        $meal = Meal::factory()->create([
+            'user_group_id' => $this->user->user_group_id
+        ]);
         $this->get(route('api.meals.show', $meal->getKey()))
             ->assertStatus(200);
     }
@@ -47,7 +49,9 @@ class MealControllerTest extends TestCase
     public function testUpdate()
     {
         $this->service->shouldReceive('updateMeal')->once()->andReturn(Meal::factory()->make());
-        $meal = Meal::factory()->create();
+        $meal = Meal::factory()->create([
+            'user_group_id' => $this->user->user_group_id
+        ]);
         $this->put(route('api.meals.update', $meal->getKey()), [
             'date' => $this->faker->date(),
         ])
@@ -57,7 +61,9 @@ class MealControllerTest extends TestCase
     public function testDestroy()
     {
         $this->service->shouldReceive('deleteMeal')->once();
-        $meal = Meal::factory()->create();
+        $meal = Meal::factory()->create([
+            'user_group_id' => $this->user->user_group_id
+        ]);
         $this->delete(route('api.meals.destroy', $meal->getKey()))
             ->assertStatus(204);
     }
@@ -65,8 +71,12 @@ class MealControllerTest extends TestCase
     public function testAddRecipe()
     {
         $this->service->shouldReceive('addRecipe')->once();
-        $meal = Meal::factory()->create();
-        $recipe = Recipe::factory()->create();
+        $meal = Meal::factory()->create([
+            'user_group_id' => $this->user->user_group_id
+        ]);
+        $recipe = Recipe::factory()->create([
+            'user_group_id' => $this->user->user_group_id
+        ]);
         $this->post(route('api.meals.add-recipe', [$meal->getKey(), $recipe->getKey()]))
             ->assertStatus(200);
     }
@@ -74,8 +84,12 @@ class MealControllerTest extends TestCase
     public function testRemoveRecipe()
     {
         $this->service->shouldReceive('removeRecipe')->once();
-        $meal = Meal::factory()->create();
-        $recipe = Recipe::factory()->create();
+        $meal = Meal::factory()->create([
+            'user_group_id' => $this->user->user_group_id
+        ]);
+        $recipe = Recipe::factory()->create([
+            'user_group_id' => $this->user->user_group_id
+        ]);
         $this->delete(route('api.meals.remove-recipe', [$meal->getKey(), $recipe->getKey()]))
             ->assertStatus(200);
     }

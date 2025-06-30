@@ -12,7 +12,8 @@ class RecipeService
 {
     public function __construct(
         private DirectionService $directionService,
-        private IngredientService $ingredientService
+        private IngredientService $ingredientService,
+        private MealService $mealService,
     ) {}
 
     /**
@@ -92,6 +93,7 @@ class RecipeService
     public function deleteRecipe(Recipe $recipe): void
     {
         $recipe->delete();
+        $recipe->meals()->each(fn($meal) => $this->mealService->removeRecipe($meal, $recipe));
         $recipe->directions()->each(fn($direction) => $this->directionService->deleteDirection($direction));
         $recipe->ingredients()->each(fn($ingredient) => $this->ingredientService->deleteIngredient($ingredient));
         if ($recipe->image) {

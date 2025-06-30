@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\EnsureUserOwnsMeal;
 use App\Http\Middleware\EnsureUserOwnsRecipe;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -11,11 +12,15 @@ Route::get('/user', function (Request $request) {
 Route::prefix('meals')->group(function () {
     Route::get('/', [App\Http\Controllers\API\MealController::class, 'index'])->name('api.meals.index');
     Route::post('/', [App\Http\Controllers\API\MealController::class, 'store'])->name('api.meals.store');
-    Route::put('/{meal}', [App\Http\Controllers\API\MealController::class, 'update'])->name('api.meals.update');
-    Route::get('/{meal}', [App\Http\Controllers\API\MealController::class, 'show'])->name('api.meals.show');
-    Route::delete('/{meal}', [App\Http\Controllers\API\MealController::class, 'destroy'])->name('api.meals.destroy');
-    Route::post('/{meal}/recipes/{recipe}', [App\Http\Controllers\API\MealController::class, 'addRecipe'])->name('api.meals.add-recipe');
-    Route::delete('/{meal}/recipes/{recipe}', [App\Http\Controllers\API\MealController::class, 'removeRecipe'])->name('api.meals.remove-recipe');
+    Route::prefix('{meal}')->middleware(EnsureUserOwnsMeal::class)->group(function () {
+        Route::put('/', [App\Http\Controllers\API\MealController::class, 'update'])->name('api.meals.update');
+        Route::get('/', [App\Http\Controllers\API\MealController::class, 'show'])->name('api.meals.show');
+        Route::delete('/', [App\Http\Controllers\API\MealController::class, 'destroy'])->name('api.meals.destroy');
+        Route::prefix('/recipes/{recipe}')->middleware(EnsureUserOwnsRecipe::class)->group(function () {
+            Route::post('/', [App\Http\Controllers\API\MealController::class, 'addRecipe'])->name('api.meals.add-recipe');
+            Route::delete('/', [App\Http\Controllers\API\MealController::class, 'removeRecipe'])->name('api.meals.remove-recipe');
+        });
+    });
 });
 
 Route::prefix('recipes')->group(function () {

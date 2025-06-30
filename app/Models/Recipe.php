@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Collection;
 
@@ -92,5 +93,10 @@ class Recipe extends Model
     public function getImagePathAttribute(): string
     {
         return route('recipe.image', ['recipe' => $this->getKey()]);
+    }
+
+    public function meals(): BelongsToMany
+    {
+        return $this->belongsToMany(Meal::class, 'meal_recipes');
     }
 }

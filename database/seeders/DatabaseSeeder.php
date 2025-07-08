@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 use App\Models\Direction;
+use App\Models\Ingredient;
+use App\Models\Meal;
 use App\Models\Recipe;
 use App\Models\User;
 use App\Models\UserGroup;
@@ -31,5 +33,17 @@ class DatabaseSeeder extends Seeder
             ->has(
                 Direction::factory()->count(3)
             )->create();
+
+        Meal::factory()
+            ->count(3)
+            ->for($userGroup)
+            ->has(
+                Recipe::factory()->has(
+                    Ingredient::factory()->count(3)
+                )
+            )
+            ->create([
+                'date' => now(),
+            ]);
     }
 }

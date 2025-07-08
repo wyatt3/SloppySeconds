@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Enums\RecipeType;
+use App\Models\Meal;
 use App\Models\Recipe;
 use App\Models\UserGroup;
 use Illuminate\Http\UploadedFile;
@@ -93,7 +94,7 @@ class RecipeService
     public function deleteRecipe(Recipe $recipe): void
     {
         $recipe->delete();
-        $recipe->meals()->each(fn($meal) => $this->mealService->removeRecipe($meal, $recipe));
+        $recipe->meals()->each(fn(Meal $meal) => $this->mealService->removeRecipe($meal, $recipe));
         $recipe->directions()->each(fn($direction) => $this->directionService->deleteDirection($direction));
         $recipe->ingredients()->each(fn($ingredient) => $this->ingredientService->deleteIngredient($ingredient));
         if ($recipe->image) {

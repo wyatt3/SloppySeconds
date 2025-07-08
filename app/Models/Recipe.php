@@ -66,6 +66,16 @@ class Recipe extends Model
     }
 
     /**
+     * Get all of the meals for the recipe.
+     *
+     * @return BelongsToMany<Meal, $this>
+     */
+    public function meals(): BelongsToMany
+    {
+        return $this->belongsToMany(Meal::class, 'meal_recipes');
+    }
+
+    /**
      * Get all of the directions for the recipe in order.
      *
      * @return Collection<int, Direction>
@@ -93,10 +103,5 @@ class Recipe extends Model
     public function getImagePathAttribute(): string
     {
         return route('recipe.image', ['recipe' => $this->getKey()]);
-    }
-
-    public function meals(): BelongsToMany
-    {
-        return $this->belongsToMany(Meal::class, 'meal_recipes');
     }
 }

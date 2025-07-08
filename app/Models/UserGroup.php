@@ -21,4 +21,24 @@ class UserGroup extends Model
     {
         return $this->hasMany(User::class);
     }
+
+    /**
+     * Get all of the meals for the user group.
+     *
+     * @return HasMany<Meal, $this>
+     */
+    public function meals(): HasMany
+    {
+        return $this->hasMany(Meal::class);
+    }
+
+    /**
+     * Get all of the recipes for the user group.
+     *
+     * @return HasMany<Recipe, $this>
+     */
+    public function recipes(): HasMany
+    {
+        return $this->hasMany(Recipe::class);
+    }
 }

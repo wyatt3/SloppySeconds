@@ -1,283 +1,144 @@
 <template>
-  <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
-    <div class="container">
-      <a class="navbar-brand" href="/"> Sloppy Seconds </a>
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-bs-toggle="collapse"
-        data-bs-target="#navbarSupportedContent"
-        aria-controls="navbarSupportedContent"
-        aria-expanded="false"
-        aria-label="Toggle Navigation"
-      >
-        <span class="navbar-toggler-icon"></span>
-      </button>
-
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <!-- Left Side Of Navbar -->
-        <ul class="navbar-nav me-auto"></ul>
-
-        <!-- Right Side Of Navbar -->
-        <ul class="navbar-nav ms-auto">
-          <Button @click="toggleDarkMode"><i class="pi pi-sun"></i></Button>
-          <!-- Authentication Links -->
-          <template v-if="$page.props.auth.user">
-            <li class="nav-item dropdown">
-              <a
-                id="navbarDropdown"
-                class="nav-link dropdown-toggle"
-                href="#"
-                role="button"
-                data-bs-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false"
-                v-pre
-              >
-                {{ $page.props.auth.user.name }}
-              </a>
-
-              <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                <a
-                  class="dropdown-item"
-                  href="{{ route('logout') }}"
-                  onclick="event.preventDefault();document.getElementById('logout-form').submit();"
-                >
-                  Logout
-                </a>
-
-                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">@csrf</form>
-              </div>
-            </li>
-          </template>
-          <template v-else>
-            <li class="nav-item">
-              <login></login>
-            </li>
-
-            <li class="nav-item">
-              <register></register>
-            </li>
-          </template>
-        </ul>
-      </div>
-    </div>
-  </nav>
-
-  <nav class="bg-gray-800">
+  <Disclosure as="nav" class="bg-gray-800" v-slot="{ open }">
     <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
       <div class="relative flex h-16 items-center justify-between">
         <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
           <!-- Mobile menu button-->
-          <button
-            type="button"
-            aria-controls="mobile-menu"
-            aria-expanded="false"
-            class="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:ring-2 focus:ring-white focus:outline-hidden focus:ring-inset"
+          <DisclosureButton
+            class="relative inline-flex items-center justify-center rounded-md p-2 text-gray-300 hover:bg-gray-700 hover:text-white focus:ring-2 focus:ring-white focus:outline-hidden focus:ring-inset"
           >
-            <span class="absolute -inset-0.5"></span>
+            <span class="absolute -inset-0.5" />
             <span class="sr-only">Open main menu</span>
-            <!--
-            Icon when menu is closed.
-
-            Menu open: "hidden", Menu closed: "block"
-          -->
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="1.5"
-              data-slot="icon"
-              aria-hidden="true"
-              class="block size-6"
-            >
-              <path d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" stroke-linecap="round" stroke-linejoin="round" />
-            </svg>
-            <!--
-            Icon when menu is open.
-
-            Menu open: "block", Menu closed: "hidden"
-          -->
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="1.5"
-              data-slot="icon"
-              aria-hidden="true"
-              class="hidden size-6"
-            >
-              <path d="M6 18 18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" />
-            </svg>
-          </button>
+            <Bars3Icon v-if="!open" class="block size-6" aria-hidden="true" />
+            <XMarkIcon v-else class="block size-6" aria-hidden="true" />
+          </DisclosureButton>
         </div>
         <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
           <div class="flex shrink-0 items-center">
-            <img
-              src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=500"
-              alt="Your Company"
-              class="h-8 w-auto"
-            />
+            <img class="h-8 w-auto" :src="logo" />
           </div>
           <div class="hidden sm:ml-6 sm:block">
             <div class="flex space-x-4">
-              <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
-              <a href="#" aria-current="page" class="rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white"
-                >Dashboard</a
-              >
               <a
-                href="#"
-                class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
-                >Team</a
-              >
-              <a
-                href="#"
-                class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
-                >Projects</a
-              >
-              <a
-                href="#"
-                class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
-                >Calendar</a
+                v-for="item in navigation"
+                :key="item.name"
+                :href="item.href"
+                :class="[
+                  item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+                  'rounded-md px-3 py-2 text-sm font-medium',
+                ]"
+                :aria-current="item.current ? 'page' : undefined"
+                >{{ item.name }}</a
               >
             </div>
           </div>
         </div>
         <div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-          <button
-            type="button"
-            class="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 focus:outline-hidden"
-          >
-            <span class="absolute -inset-1.5"></span>
-            <span class="sr-only">View notifications</span>
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="1.5"
-              data-slot="icon"
-              aria-hidden="true"
-              class="size-6"
-            >
-              <path
-                d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-            </svg>
-          </button>
-
-          <!-- Profile dropdown -->
-          <div class="relative ml-3">
-            <div>
-              <button
-                id="user-menu-button"
-                type="button"
-                aria-expanded="false"
-                aria-haspopup="true"
-                class="relative flex rounded-full bg-gray-800 text-sm focus:outline-hidden focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-gray-800"
-              >
-                <span class="absolute -inset-1.5"></span>
-                <span class="sr-only">Open user menu</span>
-                <img
-                  src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                  alt=""
-                  class="size-8 rounded-full"
-                />
-              </button>
-            </div>
-
-            <!--
-            Dropdown menu, show/hide based on menu state.
-
-            Entering: "transition ease-out duration-100"
-              From: "transform opacity-0 scale-95"
-              To: "transform opacity-100 scale-100"
-            Leaving: "transition ease-in duration-75"
-              From: "transform opacity-100 scale-100"
-              To: "transform opacity-0 scale-95"
-          -->
-            <div
-              role="menu"
-              tabindex="-1"
-              aria-labelledby="user-menu-button"
-              aria-orientation="vertical"
-              class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black/5 focus:outline-hidden"
-            >
-              <!-- Active: "bg-gray-100 outline-hidden", Not Active: "" -->
-              <a
-                id="user-menu-item-0"
-                role="menuitem"
-                href="#"
-                tabindex="-1"
-                class="block px-4 py-2 text-sm text-gray-700"
-                >Your Profile</a
-              >
-              <a
-                id="user-menu-item-1"
-                role="menuitem"
-                href="#"
-                tabindex="-1"
-                class="block px-4 py-2 text-sm text-gray-700"
-                >Settings</a
-              >
-              <a
-                id="user-menu-item-2"
-                role="menuitem"
-                href="#"
-                tabindex="-1"
-                class="block px-4 py-2 text-sm text-gray-700"
-                >Sign out</a
-              >
-            </div>
+          <div v-if="!$page.props.auth.user">
+            <Login @register="openRegister = true"></Login>
+            <Register v-model="openRegister"></Register>
           </div>
+          <!-- Profile dropdown -->
+          <Menu as="div" class="relative ml-3" v-if="$page.props.auth.user">
+            <MenuButton
+              class="relative flex rounded-full text-gray-300 text-sm focus:outline-hidden focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-gray-800"
+            >
+              <span class="absolute -inset-1.5" />
+              <span class="sr-only">Open user menu</span>
+              <UserCircleIcon class="h-8 w-8" aria-hidden="true" />
+            </MenuButton>
+
+            <transition
+              enter-active-class="transition ease-out duration-100"
+              enter-from-class="transform opacity-0 scale-95"
+              enter-to-class="transform opacity-100 scale-100"
+              leave-active-class="transition ease-in duration-75"
+              leave-from-class="transform opacity-100 scale-100"
+              leave-to-class="transform opacity-0 scale-95"
+            >
+              <MenuItems
+                class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black/5 focus:outline-hidden"
+              >
+                <MenuItem v-slot="{ active }">
+                  <a
+                    href="#"
+                    :class="[active ? 'bg-gray-100 outline-hidden' : '', 'block px-4 py-2 text-sm text-gray-700']"
+                    >Your Family</a
+                  >
+                </MenuItem>
+                <MenuItem v-slot="{ active }">
+                  <a
+                    href="#"
+                    :class="[active ? 'bg-gray-100 outline-hidden' : '', 'block px-4 py-2 text-sm text-gray-700']"
+                    >Account</a
+                  >
+                </MenuItem>
+                <MenuItem v-slot="{ active }">
+                  <a
+                    href="#"
+                    :class="[active ? 'bg-gray-100 outline-hidden' : '', 'block px-4 py-2 text-sm text-gray-700']"
+                    >Sign out</a
+                  >
+                </MenuItem>
+              </MenuItems>
+            </transition>
+          </Menu>
         </div>
       </div>
     </div>
 
-    <!-- Mobile menu, show/hide based on menu state. -->
-    <div id="mobile-menu" class="sm:hidden">
+    <DisclosurePanel class="sm:hidden">
       <div class="space-y-1 px-2 pt-2 pb-3">
-        <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
-        <a href="#" aria-current="page" class="block rounded-md bg-gray-900 px-3 py-2 text-base font-medium text-white"
-          >Dashboard</a
-        >
-        <a
-          href="#"
-          class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
-          >Team</a
-        >
-        <a
-          href="#"
-          class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
-          >Projects</a
-        >
-        <a
-          href="#"
-          class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
-          >Calendar</a
+        <DisclosureButton
+          v-for="item in navigation"
+          :key="item.name"
+          as="a"
+          :href="item.href"
+          :class="[
+            item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+            'block rounded-md px-3 py-2 text-base font-medium',
+          ]"
+          :aria-current="item.current ? 'page' : undefined"
+          >{{ item.name }}</DisclosureButton
         >
       </div>
-    </div>
-  </nav>
-
-  <slot />
+    </DisclosurePanel>
+  </Disclosure>
 </template>
 
 <script>
-import { Link } from "@inertiajs/vue3";
-import Button from "primevue/button";
-import Menubar from "primevue/menubar";
+import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/vue";
+import { Bars3Icon, UserCircleIcon, XMarkIcon } from "@heroicons/vue/24/outline";
+import logo from "@/img/icon.jpg";
 import Login from "../components/Login.vue";
 import Register from "../components/Register.vue";
 
 export default {
   components: {
-    Button,
-    Menubar,
-    Link,
+    Disclosure,
+    DisclosureButton,
+    DisclosurePanel,
+    Menu,
+    MenuButton,
+    MenuItem,
+    MenuItems,
+    Bars3Icon,
+    UserCircleIcon,
+    XMarkIcon,
     Login,
     Register,
+  },
+  data() {
+    return {
+      logo: logo,
+      openMobileMenu: false,
+      openRegister: false,
+      navigation: [
+        { name: "Home", href: "/", current: true },
+        { name: "Recipes", href: "#", current: false },
+        { name: "Shopping Lists", href: "#", current: false },
+      ],
+    };
   },
   methods: {
     toggleDarkMode() {

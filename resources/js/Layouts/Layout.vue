@@ -15,7 +15,7 @@
         </div>
         <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
           <div class="flex shrink-0 items-center">
-            <img class="h-8 w-auto" :src="logo" />
+            <img class="app-icon w-auto" :src="logo" />
           </div>
           <div class="hidden sm:ml-6 sm:block">
             <div class="flex space-x-4">
@@ -109,7 +109,7 @@
 <script>
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/vue";
 import { Bars3Icon, UserCircleIcon, XMarkIcon } from "@heroicons/vue/24/outline";
-import logo from "@/img/icon.jpg";
+import logo from "@/img/icon.png";
 import Login from "../components/Login.vue";
 import Register from "../components/Register.vue";
 
@@ -147,3 +147,10 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.app-icon {
+  height: 40px;
+  width: 40px;
+}
+</style>

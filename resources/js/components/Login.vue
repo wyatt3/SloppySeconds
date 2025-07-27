@@ -7,10 +7,10 @@
       <label>Email Address</label>
     </FloatLabel>
     <FloatLabel variant="in">
-      <InputText class="w-full" v-model="email" />
+      <InputText class="w-full" type="password" v-model="password" />
       <label>Password</label>
     </FloatLabel>
-    <Button label="Login" class="my-2 w-full" />
+    <Button label="Login" class="my-2 w-full" @click="attemptLogin" />
     <button
       class="text-gray-600 hover:text-gray-400 underline hover:no-underline m-auto block"
       @click="
@@ -41,7 +41,22 @@ export default {
       open: false,
       email: null,
       password: null,
+      remember: false,
     };
+  },
+  methods: {
+    attemptLogin() {
+      axios
+        .post("/login", {
+          email: this.email,
+          password: this.password,
+          remember: this.remember,
+        })
+        .then((response) => {
+          window.location.href = this.route("home");
+        })
+        .catch((error) => {});
+    },
   },
 };
 </script>

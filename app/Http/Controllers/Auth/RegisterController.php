@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\UserGroup;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -28,7 +29,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/';
 
     /**
      * Create a new controller instance.
@@ -52,6 +53,7 @@ class RegisterController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'join_code' => ['string', 'nullable', 'exists:user_groups,join_code'],
         ]);
     }
 
@@ -63,11 +65,15 @@ class RegisterController extends Controller
      */
     protected function create(array $data): User
     {
+        if (isset($data['join_code'])) {
+            $userGroup = UserGroup::where('join_code', $data['join_code'])->first();
+        }
         /** @var User $user */
         $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
+            'user_group_id' => $userGroup?->getKey() ?? null
         ]);
 
         return $user;

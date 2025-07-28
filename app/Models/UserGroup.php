@@ -12,6 +12,10 @@ class UserGroup extends Model
     use HasFactory;
     protected $table = 'user_groups';
 
+    protected $fillable = [
+        'join_code',
+    ];
+
     /**
      * Get all of the users for the user group.
      *

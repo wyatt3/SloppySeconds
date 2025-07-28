@@ -16,6 +16,8 @@ class UserGroupFactory extends Factory
      */
     public function definition(): array
     {
-        return [];
+        return [
+            'join_code' => $this->faker->uuid(),
+        ];
     }
 }

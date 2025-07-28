@@ -10,7 +10,8 @@
       <InputText class="w-full" type="password" v-model="password" />
       <label>Password</label>
     </FloatLabel>
-    <Button label="Login" class="my-2 w-full" @click="attemptLogin" />
+    <div v-if="error" class="text-red-600 text-center mt-2">Invalid Credentials. Please Try Again.</div>
+    <Button label="Login" class="my-2 w-full" :loading="loading" @click="attemptLogin" />
     <button
       class="text-gray-600 hover:text-gray-400 underline hover:no-underline m-auto block"
       @click="
@@ -42,10 +43,13 @@ export default {
       email: null,
       password: null,
       remember: false,
+      error: false,
+      loading: false,
     };
   },
   methods: {
     attemptLogin() {
+      this.loading = true;
       axios
         .post("/login", {
           email: this.email,
@@ -55,8 +59,21 @@ export default {
         .then((response) => {
           window.location.href = this.route("home");
         })
-        .catch((error) => {});
+        .catch((error) => {
+          this.loading = false;
+          this.error = true;
+          setTimeout(() => {
+            this.error = false;
+          }, 4000);
+        });
     },
+  },
+  created() {
+    document.addEventListener("keyup", (e) => {
+      if (e.key === "Enter") {
+        this.attemptLogin();
+      }
+    });
   },
 };
 </script>

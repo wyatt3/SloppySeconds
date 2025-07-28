@@ -74,11 +74,15 @@
                   >
                 </MenuItem>
                 <MenuItem v-slot="{ active }">
-                  <a
-                    href="#"
-                    :class="[active ? 'bg-gray-100 outline-hidden' : '', 'block px-4 py-2 text-sm text-gray-700']"
-                    >Sign out</a
+                  <button
+                    @click="logout"
+                    :class="[
+                      active ? 'bg-gray-100 outline-hidden' : '',
+                      'block px-4 py-2 text-sm text-gray-700 w-full text-left',
+                    ]"
                   >
+                    Sign out
+                  </button>
                 </MenuItem>
               </MenuItems>
             </transition>
@@ -143,6 +147,11 @@ export default {
   methods: {
     toggleDarkMode() {
       document.documentElement.classList.toggle("dark-mode");
+    },
+    logout() {
+      axios.post(this.route("logout")).then((response) => {
+        window.location.href = this.route("home");
+      });
     },
   },
 };

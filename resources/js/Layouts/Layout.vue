@@ -22,12 +22,13 @@
               <a
                 v-for="item in navigation"
                 :key="item.name"
-                :href="item.href"
+                :href="route(item.route)"
                 :class="[
-                  item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+                  $page.props.route == item.route
+                    ? 'bg-gray-900 text-white'
+                    : 'text-gray-300 hover:bg-gray-700 hover:text-white',
                   'rounded-md px-3 py-2 text-sm font-medium',
                 ]"
-                :aria-current="item.current ? 'page' : undefined"
                 >{{ item.name }}</a
               >
             </div>
@@ -97,9 +98,11 @@
           v-for="item in navigation"
           :key="item.name"
           as="a"
-          :href="item.href"
+          :href="route(item.route)"
           :class="[
-            item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+            $page.props.route == item.route
+              ? 'bg-gray-900 text-white'
+              : 'text-gray-300 hover:bg-gray-700 hover:text-white',
             'block rounded-md px-3 py-2 text-base font-medium',
           ]"
           :aria-current="item.current ? 'page' : undefined"
@@ -108,6 +111,9 @@
       </div>
     </DisclosurePanel>
   </Disclosure>
+  <div class="container mx-auto mt-5 px-5">
+    <slot />
+  </div>
 </template>
 
 <script>
@@ -138,9 +144,9 @@ export default {
       openMobileMenu: false,
       openRegister: false,
       navigation: [
-        { name: "Home", href: "/", current: true },
-        { name: "Recipes", href: "#", current: false },
-        { name: "Shopping Lists", href: "#", current: false },
+        { name: "Home", route: "home" },
+        { name: "Recipes", route: "recipes.index" },
+        { name: "Shopping Lists", route: "home" },
       ],
     };
   },

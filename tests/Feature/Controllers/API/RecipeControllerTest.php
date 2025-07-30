@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Controllers;
+namespace Tests\Feature\Controllers\API;
 
 use App\Enums\RecipeType;
 use App\Models\Recipe;

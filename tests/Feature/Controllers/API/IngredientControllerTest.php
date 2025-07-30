@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Controllers;
+namespace Tests\Feature\Controllers\API;
 
 use App\Models\Ingredient;
 use App\Models\Recipe;

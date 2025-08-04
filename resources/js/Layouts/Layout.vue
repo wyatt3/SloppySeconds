@@ -143,12 +143,20 @@ export default {
       logo: logo,
       openMobileMenu: false,
       openRegister: false,
-      navigation: [
-        { name: "Home", route: "home" },
-        { name: "Recipes", route: "recipes.index" },
-        { name: "Shopping Lists", route: "home" },
-      ],
     };
+  },
+  computed: {
+    navigation() {
+      let nav = [];
+      // default navigation
+      nav.push({ name: "Home", route: "home" });
+      // logged in navigation
+      if (this.$page.props.auth.user) {
+        nav.push({ name: "Recipes", route: "recipes.index" });
+        nav.push({ name: "Shopping Lists", route: "home" });
+      }
+      return nav;
+    },
   },
   methods: {
     toggleDarkMode() {

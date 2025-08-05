@@ -1,10 +1,10 @@
 <template>
   <div>
-    <h1>Recipes</h1>
-    <div class="filters">
+    <h1 class="mb-3 text-5xl">Recipes</h1>
+    <div class="filters mb-3">
       <InputText v-model="search" placeholder="Search" />
     </div>
-    <table class="w-100">
+    <table class="recipe-table">
       <template v-for="type in Object.keys(groupedRecipes)" :key="type">
         <thead class="bg-gray-200">
           <tr>
@@ -68,4 +68,7 @@ export default {
 </script>
 
 <style scoped>
+.recipe-table {
+  width: 100%;
+}
 </style>

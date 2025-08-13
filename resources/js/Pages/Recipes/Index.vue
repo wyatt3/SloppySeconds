@@ -13,6 +13,9 @@
         </thead>
         <tbody>
           <tr v-for="recipe in groupedRecipes[type]" :key="recipe.id">
+            <td class="px-5 py-2">
+              <a :href="route('recipe.show', recipe.id)"><i class="pi pi-eye"></i></a>
+            </td>
             <td class="px-5 py-2">{{ recipe.name }}</td>
             <td class="px-5 py-2">{{ recipe.description }}</td>
           </tr>

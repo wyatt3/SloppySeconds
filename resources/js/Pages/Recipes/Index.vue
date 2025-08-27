@@ -2,7 +2,7 @@
   <Head title="Recipes" />
   <div>
     <h1 class="mb-3 text-5xl">Recipes</h1>
-    <Button label="New Recipe" as="a" :href="route('recipe.create')" />
+    <Button label="New Recipe" as="a" :href="route('recipes.create')" />
     <div class="filters mb-3 flex gap-2">
       <FloatLabel variant="on">
         <InputText v-model="search" />
@@ -35,12 +35,13 @@
 </template>
 
 <script>
+import Button from "primevue/button";
 import { Head } from "@inertiajs/vue3";
 import InputText from "primevue/inputtext";
 import Select from "primevue/select";
 import FloatLabel from "primevue/floatlabel";
 export default {
-  components: { Head, InputText, Select, FloatLabel },
+  components: { Button, Head, InputText, Select, FloatLabel },
   data() {
     return {
       recipes: [],

@@ -8,6 +8,7 @@ import { ZiggyVue } from 'ziggy-js';
 import { Ziggy } from './ziggy.js';
 
 createInertiaApp({
+    title: title => title ? `${import.meta.env.VITE_APP_NAME} | ${title}` : import.meta.env.VITE_APP_NAME,
     resolve: name => {
         const pages = import.meta.glob('./Pages/**/*.vue', { eager: true })
         let page = pages[`./Pages/${name}.vue`]

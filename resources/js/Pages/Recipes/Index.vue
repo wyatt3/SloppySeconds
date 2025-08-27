@@ -1,4 +1,5 @@
 <template>
+  <Head title="Recipes" />
   <div>
     <h1 class="mb-3 text-5xl">Recipes</h1>
     <Button label="New Recipe" as="a" :href="route('recipe.create')" />
@@ -34,11 +35,12 @@
 </template>
 
 <script>
+import { Head } from "@inertiajs/vue3";
 import InputText from "primevue/inputtext";
 import Select from "primevue/select";
 import FloatLabel from "primevue/floatlabel";
 export default {
-  components: { InputText, Select, FloatLabel },
+  components: { Head, InputText, Select, FloatLabel },
   data() {
     return {
       recipes: [],

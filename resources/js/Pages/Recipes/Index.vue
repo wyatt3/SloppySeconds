@@ -1,8 +1,16 @@
 <template>
   <div>
     <h1 class="mb-3 text-5xl">Recipes</h1>
-    <div class="filters mb-3">
-      <InputText v-model="search" placeholder="Search" />
+    <Button label="New Recipe" as="a" :href="route('recipe.create')" />
+    <div class="filters mb-3 flex gap-2">
+      <FloatLabel variant="on">
+        <InputText v-model="search" />
+        <label>Search</label>
+      </FloatLabel>
+      <FloatLabel variant="on">
+        <Select v-model="typeFilter" :options="allTypes" placeholder="Recipe Type" />
+        <label>Recipe Type</label>
+      </FloatLabel>
     </div>
     <table class="recipe-table">
       <template v-for="type in Object.keys(groupedRecipes)" :key="type">
@@ -27,13 +35,17 @@
 
 <script>
 import InputText from "primevue/inputtext";
+import Select from "primevue/select";
+import FloatLabel from "primevue/floatlabel";
 export default {
-  components: { InputText },
+  components: { InputText, Select, FloatLabel },
   data() {
     return {
       recipes: [],
       loading: false,
       search: "",
+      typeFilter: "All",
+      allTypes: ["All"],
     };
   },
   methods: {
@@ -41,6 +53,8 @@ export default {
       this.loading = true;
       axios.get(this.route("api.recipes.index")).then((response) => {
         this.recipes = response.data;
+        // Get all unique recipe types
+        this.allTypes = ["All", ...new Set(this.recipes.map((recipe) => recipe.type))];
         this.loading = false;
       });
     },
@@ -53,6 +67,9 @@ export default {
           recipe.description.includes(this.search) ||
           recipe.type.includes(this.search)
         );
+      });
+      filteredRecipes = filteredRecipes.filter((recipe) => {
+        return this.typeFilter === "All" || recipe.type === this.typeFilter;
       });
       return filteredRecipes.reduce((acc, item) => {
         const groupKey = item["type"];

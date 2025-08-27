@@ -42,9 +42,10 @@ class ShoppingListService
     public function combineLikeIngredients(Collection $list, Collection $ingredients): Collection
     {
         foreach ($ingredients as $ingredient) {
+            /** @var ?\App\Models\Ingredient $exists */
             $exists = $list->where('name', $ingredient->name)->first();
             if ($exists && $exists->unit === $ingredient->unit) {
-                $list->where('name', $ingredient->name)->first()->increment('amount', $ingredient->amount);
+                $exists->increment('amount', $ingredient->amount);
             } else {
                 $list->push($ingredient);
             }

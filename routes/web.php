@@ -11,6 +11,8 @@ Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('ho
 Route::middleware(Authenticate::class)->group(function () {
     Route::get('/recipes', [App\Http\Controllers\RecipeController::class, 'index'])->name('recipes.index');
 
+    Route::get('/recipes/create', [App\Http\Controllers\RecipeController::class, 'create'])->name('recipes.create');
+
     Route::prefix('/recipes/{recipe}')->middleware(EnsureUserOwnsRecipe::class)->group(function () {
         Route::get('/', [App\Http\Controllers\RecipeController::class, 'show'])->name('recipe.show');
         Route::get('/image', [App\Http\Controllers\API\ImageController::class, 'getRecipeImage'])->name('recipe.image');

@@ -14,11 +14,11 @@ class HomeController extends Controller
     public function __construct() {}
 
     /**
-     * Show the application dashboard.
+     * Show the application home.
      *
-     * @return \Illuminate\Contracts\Support\Renderable
+     * @return \Inertia\Response|\Inertia\ResponseFactory
      */
-    public function index()
+    public function index(): \Inertia\Response|\Inertia\ResponseFactory
     {
         return inertia('welcome');
     }

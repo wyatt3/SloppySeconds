@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Storage;
 
 /**
+ * @property string $title
  * @property string $content
  * @property int $recipe_id
  * @property int $order
@@ -26,6 +27,7 @@ class Direction extends Model
     protected $appends = ['imagePath'];
 
     protected $fillable = [
+        'title',
         'content',
         'recipe_id',
         'order',

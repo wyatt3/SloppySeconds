@@ -21,13 +21,15 @@ class DirectionServiceTest extends TestCase
     public function testCreateDirection(): void
     {
         Storage::fake('recipeImages');
+        $title = $this->faker->word();
         $content = $this->faker->sentence();
         $image = UploadedFile::fake()->image('image.jpg');
         $recipe = Recipe::factory()->create();
 
-        $direction = $this->service->createDirection($content, $image, $recipe);
+        $direction = $this->service->createDirection($title, $content, $image, $recipe);
 
         $this->assertDatabaseHas('directions', [
+            'title' => $title,
             'content' => $content,
             'image' => $direction->getKey() . '.' . $image->getClientOriginalExtension(),
             'recipe_id' => $recipe->getKey(),
@@ -38,11 +40,12 @@ class DirectionServiceTest extends TestCase
     public function testUpdateDirection(): void
     {
         Storage::fake('recipeImages');
+        $title = $this->faker->word();
         $direction = Direction::factory()->create();
         $content = $this->faker->sentence();
         $image = UploadedFile::fake()->image('image.jpg');
 
-        $direction = $this->service->updateDirection($direction, $content, $image);
+        $direction = $this->service->updateDirection($direction, $title, $content, $image);
 
         $this->assertDatabaseHas('directions', [
             'content' => $content,

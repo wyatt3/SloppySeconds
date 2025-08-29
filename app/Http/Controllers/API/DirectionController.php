@@ -24,11 +24,13 @@ class DirectionController extends Controller
      */
     public function store(DirectionRequest $request, Recipe $recipe): Response
     {
+        /** @var ?string $title */
+        $title = $request->input('title');
         /** @var string $content */
         $content = $request->input('content');
         /** @var ?UploadedFile $image */
         $image = $request->file('image');
-        $direction = $this->directionService->createDirection($content, $image, $recipe);
+        $direction = $this->directionService->createDirection($title, $content, $image, $recipe);
         return response($direction, 201);
     }
 
@@ -42,11 +44,13 @@ class DirectionController extends Controller
      */
     public function update(DirectionRequest $request, Recipe $recipe, Direction $direction): Response
     {
+        /** @var ?string $title */
+        $title = $request->input('title');
         /** @var string $content */
         $content = $request->input('content');
         /** @var ?UploadedFile $image */
         $image = $request->file('image');
-        $direction = $this->directionService->updateDirection($direction, $content, $image);
+        $direction = $this->directionService->updateDirection($direction, $title, $content, $image);
         return response($direction);
     }
 

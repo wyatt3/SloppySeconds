@@ -13,16 +13,18 @@ class DirectionService
     /**
      * Create a direction
      *
+     * @param ?string $title
      * @param string $content
      * @param ?UploadedFile $image
      * @param Recipe $recipe
      * @return Direction
      */
-    public function createDirection(string $content, ?UploadedFile $image, Recipe $recipe): Direction
+    public function createDirection(?string $title, string $content, ?UploadedFile $image, Recipe $recipe): Direction
     {
         /** @var int $order */
         $order = $recipe->directions()->max('order') ?? 0;
         $direction = $recipe->directions()->create([
+            'title' => $title,
             'content' => $content,
             'image' => null,
             'order' =>  $order + 1,
@@ -46,17 +48,17 @@ class DirectionService
      * Update a direction
      *
      * @param Direction $direction
+     * @param ?string $title
      * @param string $content
      * @param ?UploadedFile $image
      * @return Direction
      */
-    public function updateDirection(Direction $direction, string $content, ?UploadedFile $image): Direction
+    public function updateDirection(Direction $direction, ?string $title, string $content, ?UploadedFile $image): Direction
     {
         $update = [
+            'title' => $title,
             'content' => $content,
         ];
-        //filter null values
-        $update = array_filter($update);
 
         if ($image) {
             /** @var string $id */

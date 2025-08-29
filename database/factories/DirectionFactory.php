@@ -20,6 +20,7 @@ class DirectionFactory extends Factory
     public function definition(): array
     {
         return [
+            'title' => $this->faker->word(),
             'content' => $this->faker->text(50),
             'recipe_id' => Recipe::factory(),
             'order' => $this->faker->numberBetween(1, 10),

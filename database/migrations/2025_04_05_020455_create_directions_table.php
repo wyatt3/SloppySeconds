@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('directions', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
+            $table->string('title')->nullable();
             $table->text('content');
             $table->string('image')->nullable();
             $table->integer('recipe_id');

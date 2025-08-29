@@ -2,7 +2,10 @@
   <Head title="Recipes" />
   <div>
     <h1 class="mb-3 text-5xl">Recipes</h1>
-    <Button label="New Recipe" as="a" :href="route('recipes.create')" />
+    <Button class="mb-2" as="a" :href="route('recipes.create')">
+      <i class="pi pi-plus"></i>
+      Add A New Recipe
+    </Button>
     <div class="filters mb-3 flex gap-2">
       <FloatLabel variant="on">
         <InputText v-model="search" />

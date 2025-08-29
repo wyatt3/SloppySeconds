@@ -22,6 +22,7 @@ class DirectionRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'title' => ['nullable', 'string'],
             'content' => ['required', 'string'],
             'image' => ['nullable', 'image'],
         ];

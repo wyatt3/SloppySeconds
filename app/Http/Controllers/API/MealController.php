@@ -35,6 +35,7 @@ class MealController extends Controller
             $user
                 ->meals()
                 ->whereBetween('date', [$startDate, $endDate])
+                ->with('recipes')
                 ->orderBy('date')
                 ->get()
         );

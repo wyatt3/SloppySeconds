@@ -153,7 +153,8 @@ export default {
       // logged in navigation
       if (this.$page.props.auth.user) {
         nav.push({ name: "Recipes", route: "recipes.index" });
-        nav.push({ name: "Shopping Lists", route: "home" });
+        nav.push({ name: "Meal Planner", route: "meals.index" });
+        nav.push({ name: "Shopping List", route: "shopping-list.index" });
       }
       return nav;
     },

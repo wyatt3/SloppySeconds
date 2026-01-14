@@ -38,4 +38,17 @@ class RecipeController extends Controller
     {
         return inertia('Recipes/Create');
     }
+
+    /**
+     * Edit a recipe
+     *
+     * @param Recipe $recipe
+     * @return \Inertia\Response|\Inertia\ResponseFactory
+     */
+    public function edit(Recipe $recipe): \Inertia\Response|\Inertia\ResponseFactory
+    {
+        return inertia('Recipes/Edit', [
+            'recipe' => $recipe,
+        ]);
+    }
 }

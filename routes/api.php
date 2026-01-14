@@ -8,6 +8,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::post('login', [App\Http\Controllers\Auth\LoginController::class, 'login'])->name('api.login');
 
+    Route::get('shopping-list', [App\Http\Controllers\API\ShoppingListController::class, 'index'])->name('api.shopping-list.index');
+
     Route::prefix('meals')->group(function () {
         Route::get('/', [App\Http\Controllers\API\MealController::class, 'index'])->name('api.meals.index');
         Route::post('/', [App\Http\Controllers\API\MealController::class, 'store'])->name('api.meals.store');

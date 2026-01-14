@@ -10,11 +10,14 @@ Auth::routes();
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::middleware(Authenticate::class)->group(function () {
     Route::get('/recipes', [App\Http\Controllers\RecipeController::class, 'index'])->name('recipes.index');
+    Route::get('/meals', [App\Http\Controllers\MealController::class, 'index'])->name('meals.index');
+    Route::get('/shopping-list', [App\Http\Controllers\ShoppingListController::class, 'index'])->name('shopping-list.index');
 
     Route::get('/recipes/create', [App\Http\Controllers\RecipeController::class, 'create'])->name('recipes.create');
 
     Route::prefix('/recipes/{recipe}')->middleware(EnsureUserOwnsRecipe::class)->group(function () {
         Route::get('/', [App\Http\Controllers\RecipeController::class, 'show'])->name('recipe.show');
+        Route::get('/edit', [App\Http\Controllers\RecipeController::class, 'edit'])->name('recipe.edit');
         Route::get('/image', [App\Http\Controllers\API\ImageController::class, 'getRecipeImage'])->name('recipe.image');
         Route::get('/directions/{direction}/image', [App\Http\Controllers\API\ImageController::class, 'getDirectionImage'])->name('direction.image');
     });

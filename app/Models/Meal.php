@@ -19,6 +19,17 @@ class Meal extends Model
         'user_group_id',
     ];
 
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'date' => 'date:Y-m-d',
+        ];
+    }
 
     /**
      * Get the recipes for the meal.

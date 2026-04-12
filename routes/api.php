@@ -8,6 +8,13 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::post('login', [App\Http\Controllers\Auth\LoginController::class, 'login'])->name('api.login');
 
+    Route::prefix('family')->group(function () {
+        Route::get('/', [App\Http\Controllers\API\FamilyController::class, 'index'])->name('api.family.index');
+        Route::post('/', [App\Http\Controllers\API\FamilyController::class, 'create'])->name('api.family.create');
+        Route::post('/join', [App\Http\Controllers\API\FamilyController::class, 'join'])->name('api.family.join');
+        Route::delete('/leave', [App\Http\Controllers\API\FamilyController::class, 'leave'])->name('api.family.leave');
+    });
+
     Route::get('shopping-list', [App\Http\Controllers\API\ShoppingListController::class, 'index'])->name('api.shopping-list.index');
 
     Route::prefix('meals')->group(function () {

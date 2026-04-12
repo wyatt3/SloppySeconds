@@ -12,6 +12,7 @@ Route::middleware(Authenticate::class)->group(function () {
     Route::get('/recipes', [App\Http\Controllers\RecipeController::class, 'index'])->name('recipes.index');
     Route::get('/meals', [App\Http\Controllers\MealController::class, 'index'])->name('meals.index');
     Route::get('/shopping-list', [App\Http\Controllers\ShoppingListController::class, 'index'])->name('shopping-list.index');
+    Route::get('/family', [App\Http\Controllers\FamilyController::class, 'index'])->name('family.index');
 
     Route::get('/recipes/create', [App\Http\Controllers\RecipeController::class, 'create'])->name('recipes.create');
 

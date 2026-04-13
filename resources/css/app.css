@@ -128,3 +128,14 @@
 .p-datepicker-year:hover {
     background-color: #4b5563 !important;
 }
+
+.p-message {
+    overflow: hidden;
+    outline-color: #2c323a !important;
+}
+
+.p-message-content {
+    background-color: #4b5563 !important;
+    border-color: #4b5563 !important;
+    color: white !important;
+}

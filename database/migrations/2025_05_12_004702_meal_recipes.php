@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('meal_recipes', function (Blueprint $table) {
             $table->integer('meal_id');
             $table->integer('recipe_id');
+            $table->unique(['meal_id', 'recipe_id'], 'meal_recipes_meal_recipe_unique');
         });
     }
 

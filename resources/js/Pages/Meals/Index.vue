@@ -163,9 +163,14 @@ export default {
       return `${startStr} - ${endStr}`;
     },
     filteredRecipes() {
-      if (!this.recipeSearch) return this.recipes;
+      let recipes = this.recipes;
+      if (this.selectedDate) {
+        const mealRecipes = this.getMealRecipes(this.selectedDate).map((r) => r.id);
+        recipes = this.recipes.filter((r) => !mealRecipes.includes(r.id));
+      }
+      if (!this.recipeSearch) return recipes;
       const search = this.recipeSearch.toLowerCase();
-      return this.recipes.filter((r) => r.name.toLowerCase().includes(search) || r.type.toLowerCase().includes(search));
+      return recipes.filter((r) => r.name.toLowerCase().includes(search) || r.type.toLowerCase().includes(search));
     },
   },
   methods: {

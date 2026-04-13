@@ -9,8 +9,20 @@ use Illuminate\Support\Carbon;
 
 class MealService
 {
+    public function getMealForDate(Carbon $date, UserGroup $userGroup): ?Meal
+    {
+        return Meal::where('date', $date->toDateString())
+            ->where('user_group_id', $userGroup->getKey())
+            ->first();
+    }
+
     public function createMeal(Carbon $date, UserGroup $userGroup): Meal
     {
+        $existing = $this->getMealForDate($date, $userGroup);
+        if ($existing) {
+            return $existing;
+        }
+
         return Meal::create([
             'date' => $date,
             'user_group_id' => $userGroup->getKey(),

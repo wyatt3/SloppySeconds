@@ -10,7 +10,13 @@
         <span class="text-sm text-gray-400">{{ recipe.type }}</span>
       </div>
       <div class="flex gap-2">
-        <Button as="a" :href="route('recipe.edit', { recipe: recipe.id })" icon="pi pi-pencil" label="Edit" severity="secondary" />
+        <Button
+          as="a"
+          :href="route('recipe.edit', { recipe: recipe.id })"
+          icon="pi pi-pencil"
+          label="Edit"
+          severity="secondary"
+        />
         <Button icon="pi pi-calendar-plus" label="Add to Meal" @click="showDatePicker = true" />
       </div>
     </div>
@@ -20,7 +26,11 @@
     <!-- Ingredients Section -->
     <h2 class="text-3xl mb-3 text-white">Ingredients</h2>
     <ul v-if="recipe.orderedIngredients.length > 0" class="ingredient-list mb-5">
-      <li v-for="ingredient in recipe.orderedIngredients" :key="ingredient.id" class="py-2 border-b border-gray-700 flex justify-between text-gray-300">
+      <li
+        v-for="ingredient in recipe.orderedIngredients"
+        :key="ingredient.id"
+        class="py-2 border-b border-gray-700 flex justify-between text-gray-300"
+      >
         <span>{{ ingredient.name }}</span>
         <span class="text-gray-500">{{ formatAmount(ingredient.amount) }} {{ ingredient.unit }}</span>
       </li>
@@ -32,7 +42,9 @@
     <ol v-if="recipe.orderedDirections.length > 0" class="direction-list mb-5">
       <li v-for="(direction, index) in recipe.orderedDirections" :key="direction.id" class="mb-4">
         <div class="flex gap-3">
-          <div class="step-number flex-shrink-0 w-8 h-8 bg-emerald-600 text-white rounded-full flex items-center justify-center font-bold">
+          <div
+            class="step-number flex-shrink-0 w-8 h-8 bg-emerald-600 text-white rounded-full flex items-center justify-center font-bold"
+          >
             {{ index + 1 }}
           </div>
           <div class="flex-1">
@@ -54,7 +66,13 @@
     </Dialog>
 
     <!-- Success Message -->
-    <Message v-if="mealAddedMessage" severity="success" class="fixed bottom-4 right-4" :life="3000" @close="mealAddedMessage = ''">
+    <Message
+      v-if="mealAddedMessage"
+      class="fixed bottom-4 right-4"
+      :life="3000"
+      @close="mealAddedMessage = ''"
+      @life-end="mealAddedMessage = ''"
+    >
       {{ mealAddedMessage }}
     </Message>
   </div>
@@ -112,18 +130,18 @@ export default {
           meal = createResponse.data;
         }
 
+        // Check if recipe is already in this meal
+        if (meal.recipes?.some((r) => r.id === this.recipe.id)) {
+          this.showDatePicker = false;
+          this.mealAddedMessage = `"${this.recipe.name}" is already on ${this.selectedDate.toLocaleDateString()}`;
+          return;
+        }
+
         // Add recipe to meal
-        await axios.post(
-          this.route("api.meals.add-recipe", { meal: meal.id, recipe: this.recipe.id })
-        );
+        await axios.post(this.route("api.meals.add-recipe", { meal: meal.id, recipe: this.recipe.id }));
 
         this.showDatePicker = false;
         this.mealAddedMessage = `Added "${this.recipe.name}" to ${this.selectedDate.toLocaleDateString()}`;
-
-        // Clear message after 3 seconds
-        setTimeout(() => {
-          this.mealAddedMessage = "";
-        }, 3000);
       } catch (error) {
         console.error("Error adding recipe to meal:", error);
         alert("Error adding recipe to meal plan");

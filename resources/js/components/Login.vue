@@ -1,19 +1,19 @@
 <template>
-  <button class="text-gray-300 hover:text-gray-700 hover:text-white" @click="open = true">Login</button>
+  <button class="text-gray-300 hover:text-white" @click="open = true">Login</button>
 
   <Dialog class="min-w-[400px]" :draggable="false" v-model:visible="open" header="Login" modal>
     <FloatLabel variant="in" class="mb-2">
-      <InputText class="w-full" type="email" v-model="email" />
+      <InputText class="w-full dark-input" type="email" v-model="email" />
       <label>Email Address</label>
     </FloatLabel>
     <FloatLabel variant="in">
-      <InputText class="w-full" type="password" v-model="password" />
+      <InputText class="w-full dark-input" type="password" v-model="password" />
       <label>Password</label>
     </FloatLabel>
-    <div v-if="error" class="text-red-600 text-center mt-2">Invalid Credentials. Please Try Again.</div>
+    <div v-if="error" class="text-red-500 text-center mt-2">Invalid Credentials. Please Try Again.</div>
     <Button label="Login" class="my-2 w-full" :loading="loading" @click="attemptLogin" />
     <button
-      class="text-gray-600 hover:text-gray-400 underline hover:no-underline m-auto block"
+      class="text-gray-400 hover:text-white underline hover:no-underline m-auto block"
       @click="
         open = false;
         $emit('register');
@@ -79,4 +79,9 @@ export default {
 </script>
 
 <style scoped>
+:deep(.dark-input .p-inputtext) {
+  background-color: #1f2937;
+  border-color: #4b5563;
+  color: white;
+}
 </style>

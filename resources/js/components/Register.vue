@@ -1,25 +1,25 @@
 <template>
   <Dialog class="min-w-[400px]" :draggable="false" v-model:visible="open" header="Register" modal>
     <FloatLabel variant="in" class="mb-2">
-      <InputText class="w-full" type="email" v-model="name" @input="nameErrors = []" />
+      <InputText class="w-full dark-input" type="text" v-model="name" @input="nameErrors = []" />
       <label>Name</label>
     </FloatLabel>
     <Message v-for="error in nameErrors" :key="error" class="ms-2 mb-2" severity="error" size="small" variant="simple">
       {{ error }}
     </Message>
     <FloatLabel variant="in" class="mb-2">
-      <InputText class="w-full" type="email" v-model="email" @input="emailErrors = []" />
+      <InputText class="w-full dark-input" type="email" v-model="email" @input="emailErrors = []" />
       <label>Email Address</label>
     </FloatLabel>
     <Message v-for="error in emailErrors" :key="error" class="ms-2 mb-2" severity="error" size="small" variant="simple">
       {{ error }}
     </Message>
     <FloatLabel variant="in" class="mb-2">
-      <InputText class="w-full" type="password" v-model="password" @input="passwordErrors = []" />
+      <InputText class="w-full dark-input" type="password" v-model="password" @input="passwordErrors = []" />
       <label>Password</label>
     </FloatLabel>
     <FloatLabel variant="in" class="mb-2">
-      <InputText class="w-full" type="password" v-model="passwordConfirm" @input="passwordErrors = []" />
+      <InputText class="w-full dark-input" type="password" v-model="passwordConfirm" @input="passwordErrors = []" />
       <label>Confirm Password</label>
     </FloatLabel>
     <Message
@@ -33,7 +33,7 @@
       {{ error }}
     </Message>
     <FloatLabel variant="in">
-      <InputText class="w-full" type="text" v-model="joinCode" @input="joinCodeErrors = []" />
+      <InputText class="w-full dark-input" type="text" v-model="joinCode" @input="joinCodeErrors = []" />
       <label>Family Code (Optional)</label>
     </FloatLabel>
     <Message
@@ -46,7 +46,7 @@
     >
       {{ error }}
     </Message>
-    <div v-if="error" class="text-red-600 text-center mt-2">Invalid Credentials. Please Try Again.</div>
+    <div v-if="error" class="text-red-500 text-center mt-2">Invalid Credentials. Please Try Again.</div>
     <Button label="Register" class="my-2 w-full" :loading="loading" @click="register" />
   </Dialog>
 </template>
@@ -124,4 +124,9 @@ export default {
 </script>
 
 <style scoped>
+:deep(.dark-input .p-inputtext) {
+  background-color: #1f2937;
+  border-color: #4b5563;
+  color: white;
+}
 </style>

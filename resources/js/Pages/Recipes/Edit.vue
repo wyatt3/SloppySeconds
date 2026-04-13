@@ -1,59 +1,53 @@
 <template>
   <div class="small-container">
     <Head :title="'Edit ' + recipe.name" />
-    <h1 class="mb-3 text-5xl">Edit Recipe</h1>
+    <h1 class="mb-3 text-5xl text-white">Edit Recipe</h1>
 
     <!-- Recipe Name -->
     <FloatLabel class="mb-3" variant="on">
-      <InputText class="input" v-model="form.name" />
+      <InputText class="input dark-input" v-model="form.name" />
       <label>Name</label>
     </FloatLabel>
-    <Message v-if="errors.name" severity="error" class="mb-2">{{ errors.name[0] }}</Message>
 
     <!-- Recipe Description -->
     <FloatLabel class="mb-3" variant="on">
-      <TextArea class="input" rows="4" v-model="form.description" />
+      <TextArea class="input dark-input" rows="4" v-model="form.description" />
       <label>Description</label>
     </FloatLabel>
 
     <!-- Recipe Type -->
     <FloatLabel class="mb-3" variant="on">
-      <Select class="input" v-model="form.type" :options="recipeTypes" placeholder="Select Type" />
+      <Select class="input dark-input" v-model="form.type" :options="recipeTypes" placeholder="Select Type" />
       <label>Recipe Type</label>
     </FloatLabel>
-    <Message v-if="errors.type" severity="error" class="mb-2">{{ errors.type[0] }}</Message>
+    <Message v-if="errors.name" severity="error" class="mb-2">{{ errors.name[0] }}</Message>
 
     <!-- Recipe Image -->
     <div class="mb-4">
-      <label class="block mb-2 font-semibold">Recipe Image</label>
+      <label class="block mb-2 font-semibold text-white">Recipe Image</label>
       <div v-if="imagePreview || recipe.image" class="mb-2 flex items-center gap-2">
         <img :src="imagePreview || recipe.imagePath" class="max-w-48 max-h-48 object-cover rounded" />
-        <Button v-if="imagePreview" icon="pi pi-times" severity="danger" text @click="clearImageChange" title="Undo change" />
+        <Button
+          v-if="imagePreview"
+          icon="pi pi-times"
+          severity="danger"
+          text
+          @click="clearImageChange"
+          title="Undo change"
+        />
       </div>
-      <FileUpload
-        mode="basic"
-        accept="image/*"
-        :auto="false"
-        @select="onImageSelect"
-        chooseLabel="Change Image"
-      />
-    </div>
-
-    <!-- Save Recipe Button -->
-    <div class="flex gap-2 mb-5">
-      <Button label="Save Recipe" icon="pi pi-check" :loading="savingRecipe" @click="saveRecipe" :disabled="!hasRecipeChanges" />
-      <span v-if="recipeSaved" class="text-green-600 flex items-center"><i class="pi pi-check-circle mr-1"></i> Saved</span>
+      <FileUpload mode="basic" accept="image/*" :auto="false" @select="onImageSelect" chooseLabel="Change Image" />
     </div>
 
     <!-- Ingredients Section -->
-    <h2 class="mb-3 text-3xl">Ingredients</h2>
+    <h2 class="mb-3 text-3xl text-white">Ingredients</h2>
     <table v-if="localIngredients.length > 0">
       <thead>
         <tr>
           <th class="w-8"></th>
-          <th class="text-left">Name</th>
-          <th class="text-left">Qty</th>
-          <th class="text-left">Unit</th>
+          <th class="text-left text-white">Name</th>
+          <th class="text-left text-white">Qty</th>
+          <th class="text-left text-white">Unit</th>
           <th class="w-24"></th>
         </tr>
       </thead>
@@ -66,8 +60,20 @@
               <td><InputText v-model="ingredient.amount" type="number" step="any" class="w-16" size="small" /></td>
               <td><InputText v-model="ingredient.unit" class="w-20" size="small" /></td>
               <td class="flex gap-1">
-                <Button icon="pi pi-check" text size="small" @click="saveIngredient(ingredient)" :loading="ingredient._saving" />
-                <Button icon="pi pi-times" text size="small" severity="secondary" @click="cancelIngredientEdit(ingredient)" />
+                <Button
+                  icon="pi pi-check"
+                  text
+                  size="small"
+                  @click="saveIngredient(ingredient)"
+                  :loading="ingredient._saving"
+                />
+                <Button
+                  icon="pi pi-times"
+                  text
+                  size="small"
+                  severity="secondary"
+                  @click="cancelIngredientEdit(ingredient)"
+                />
               </td>
             </template>
             <template v-else>
@@ -76,7 +82,14 @@
               <td>{{ ingredient.unit }}</td>
               <td class="flex gap-1">
                 <Button icon="pi pi-pencil" text size="small" @click="editIngredient(ingredient)" />
-                <Button icon="pi pi-trash" text size="small" severity="danger" @click="deleteIngredient(ingredient)" :loading="ingredient._deleting" />
+                <Button
+                  icon="pi pi-trash"
+                  text
+                  size="small"
+                  severity="danger"
+                  @click="deleteIngredient(ingredient)"
+                  :loading="ingredient._deleting"
+                />
               </td>
             </template>
           </tr>
@@ -99,15 +112,24 @@
         <InputText v-model="newIngredient.unit" class="w-full" size="small" />
         <label>Unit</label>
       </FloatLabel>
-      <Button icon="pi pi-plus" size="small" @click="addIngredient" :disabled="!canAddIngredient" :loading="addingIngredient" />
+      <Button
+        icon="pi pi-plus"
+        size="small"
+        @click="addIngredient"
+        :disabled="!canAddIngredient"
+        :loading="addingIngredient"
+      />
     </div>
 
     <!-- Directions Section -->
-    <h2 class="mb-3 text-3xl">Directions</h2>
+    <h2 class="mb-3 text-3xl text-white">Directions</h2>
     <div v-if="localDirections.length > 0" class="directions-list mb-3">
       <draggable v-model="localDirections" item-key="id" handle=".handle" @end="onDirectionReorder">
         <template #item="{ element: direction, index }">
-          <div class="direction-item border rounded p-3 mb-2 bg-gray-50" :class="{ 'bg-green-50': direction._new }">
+          <div
+            class="direction-item border border-gray-700 rounded p-3 mb-2 bg-gray-800 text-white"
+            :class="{ 'bg-green-900': direction._new }"
+          >
             <div class="flex items-start gap-2">
               <div class="handle cursor-move pt-1"><i class="pi pi-bars"></i></div>
               <div class="flex-1">
@@ -121,23 +143,55 @@
                     <label>Direction</label>
                   </FloatLabel>
                   <div class="flex items-center gap-2 mb-2">
-                    <FileUpload mode="basic" accept="image/*" :auto="false" @select="(e) => onDirectionImageSelect(e, direction)" chooseLabel="Image" class="p-button-sm" />
-                    <img v-if="direction._imagePreview || direction.image" :src="direction._imagePreview || direction.imagePath" class="w-16 h-16 object-cover rounded" />
+                    <FileUpload
+                      mode="basic"
+                      accept="image/*"
+                      :auto="false"
+                      @select="(e) => onDirectionImageSelect(e, direction)"
+                      chooseLabel="Image"
+                      class="p-button-sm"
+                    />
+                    <img
+                      v-if="direction._imagePreview || direction.image"
+                      :src="direction._imagePreview || direction.imagePath"
+                      class="w-16 h-16 object-cover rounded"
+                    />
                   </div>
                   <div class="flex gap-1">
-                    <Button label="Save" icon="pi pi-check" size="small" @click="saveDirection(direction)" :loading="direction._saving" />
-                    <Button label="Cancel" icon="pi pi-times" size="small" severity="secondary" @click="cancelDirectionEdit(direction)" />
+                    <Button
+                      label="Save"
+                      icon="pi pi-check"
+                      size="small"
+                      @click="saveDirection(direction)"
+                      :loading="direction._saving"
+                    />
+                    <Button
+                      label="Cancel"
+                      icon="pi pi-times"
+                      size="small"
+                      severity="secondary"
+                      @click="cancelDirectionEdit(direction)"
+                    />
                   </div>
                 </template>
                 <template v-else>
                   <div class="flex justify-between">
                     <div>
-                      <div class="font-semibold">Step {{ index + 1 }}<span v-if="direction.title">: {{ direction.title }}</span></div>
-                      <p class="text-gray-700">{{ direction.content }}</p>
+                      <div class="font-semibold">
+                        Step {{ index + 1 }}<span v-if="direction.title">: {{ direction.title }}</span>
+                      </div>
+                      <p class="text-gray-300">{{ direction.content }}</p>
                     </div>
                     <div class="flex gap-1">
                       <Button icon="pi pi-pencil" text size="small" @click="editDirection(direction)" />
-                      <Button icon="pi pi-trash" text size="small" severity="danger" @click="deleteDirection(direction)" :loading="direction._deleting" />
+                      <Button
+                        icon="pi pi-trash"
+                        text
+                        size="small"
+                        severity="danger"
+                        @click="deleteDirection(direction)"
+                        :loading="direction._deleting"
+                      />
                     </div>
                   </div>
                   <img v-if="direction.image" :src="direction.imagePath" class="mt-2 max-w-32 rounded" />
@@ -151,7 +205,7 @@
     <p v-else class="text-gray-500 mb-3">No directions yet.</p>
 
     <!-- Add New Direction -->
-    <div class="border rounded p-3 mb-5 bg-white">
+    <div class="border border-gray-700 rounded p-3 mb-5 bg-gray-800">
       <FloatLabel variant="on" class="mb-2">
         <InputText v-model="newDirection.title" class="w-full" />
         <label>Title (optional)</label>
@@ -162,23 +216,59 @@
       </FloatLabel>
       <div class="flex justify-between items-center">
         <div class="flex items-center gap-2">
-          <FileUpload mode="basic" accept="image/*" :auto="false" @select="onNewDirectionImageSelect" chooseLabel="Add Image" />
-          <img v-if="newDirection.imagePreview" :src="newDirection.imagePreview" class="w-12 h-12 object-cover rounded" />
-          <Button v-if="newDirection.imagePreview" icon="pi pi-times" text size="small" severity="secondary" @click="clearNewDirectionImage" />
+          <FileUpload
+            mode="basic"
+            accept="image/*"
+            :auto="false"
+            @select="onNewDirectionImageSelect"
+            chooseLabel="Add Image"
+          />
+          <img
+            v-if="newDirection.imagePreview"
+            :src="newDirection.imagePreview"
+            class="w-12 h-12 object-cover rounded"
+          />
+          <Button
+            v-if="newDirection.imagePreview"
+            icon="pi pi-times"
+            text
+            size="small"
+            severity="secondary"
+            @click="clearNewDirectionImage"
+          />
         </div>
-        <Button label="Add Direction" icon="pi pi-plus" @click="addDirection" :disabled="!canAddDirection" :loading="addingDirection" />
+        <Button
+          label="Add Direction"
+          icon="pi pi-plus"
+          @click="addDirection"
+          :disabled="!canAddDirection"
+          :loading="addingDirection"
+        />
       </div>
     </div>
 
     <!-- Action Buttons -->
     <div class="flex justify-between items-center">
-      <Button label="Back to Recipe" severity="secondary" as="a" :href="route('recipe.show', { recipe: recipe.id })" />
+      <Button
+        label="Discard Changes"
+        icon="pi pi-undo"
+        severity="secondary"
+        as="a"
+        :href="route('recipe.show', { recipe: recipe.id })"
+      />
+      <!-- Save Recipe Button -->
+      <div class="flex gap-2">
+        <Button label="Save Recipe" icon="pi pi-check" :loading="savingRecipe" @click="saveRecipe" />
+        <span v-if="recipeSaved" class="text-green-600 flex items-center"
+          ><i class="pi pi-check-circle mr-1"></i> Saved</span
+        >
+      </div>
       <Button label="Delete Recipe" severity="danger" icon="pi pi-trash" @click="confirmDelete" />
     </div>
 
     <!-- Delete Confirmation Dialog -->
     <Dialog v-model:visible="showDeleteDialog" header="Delete Recipe" :modal="true" :style="{ width: '400px' }">
-      <p>Are you sure you want to delete "{{ recipe.name }}"?</p>
+      <p class="text-white">Are you sure you want to delete "{{ recipe.name }}"?</p>
       <p class="text-gray-500 text-sm mt-2">This action cannot be undone.</p>
       <template #footer>
         <Button label="Cancel" severity="secondary" @click="showDeleteDialog = false" />
@@ -261,22 +351,10 @@ export default {
   },
   computed: {
     canAddIngredient() {
-      return (
-        this.newIngredient.name?.trim() &&
-        this.newIngredient.amount &&
-        this.newIngredient.unit?.trim()
-      );
+      return this.newIngredient.name?.trim() && this.newIngredient.amount && this.newIngredient.unit?.trim();
     },
     canAddDirection() {
       return this.newDirection.content?.trim();
-    },
-    hasRecipeChanges() {
-      return (
-        this.form.name !== this.originalForm.name ||
-        this.form.description !== this.originalForm.description ||
-        this.form.type !== this.originalForm.type ||
-        this.newImage !== null
-      );
     },
   },
   methods: {
@@ -323,11 +401,9 @@ export default {
         // Laravel requires _method for PUT with FormData
         formData.append("_method", "PUT");
 
-        await axios.post(
-          this.route("api.recipes.update", { recipe: this.recipe.id }),
-          formData,
-          { headers: { "Content-Type": "multipart/form-data" } }
-        );
+        await axios.post(this.route("api.recipes.update", { recipe: this.recipe.id }), formData, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
 
         // Update original form to reflect saved state
         this.originalForm = { ...this.form };
@@ -389,23 +465,18 @@ export default {
       this.addingIngredient = true;
 
       try {
-        const response = await axios.post(
-          this.route("api.ingredients.store", { recipe: this.recipe.id }),
-          {
-            name: this.newIngredient.name.trim(),
-            amount: parseFloat(this.newIngredient.amount),
-            unit: this.newIngredient.unit.trim(),
-          }
-        );
+        const response = await axios.post(this.route("api.ingredients.store", { recipe: this.recipe.id }), {
+          name: this.newIngredient.name.trim(),
+          amount: parseFloat(this.newIngredient.amount),
+          unit: this.newIngredient.unit.trim(),
+        });
 
         this.localIngredients.push({ ...response.data, _new: true });
         this.newIngredient = { name: "", amount: "", unit: "" };
 
         // Remove _new flag after a moment
         setTimeout(() => {
-          const added = this.localIngredients.find(
-            (i) => i.id === response.data.id
-          );
+          const added = this.localIngredients.find((i) => i.id === response.data.id);
           if (added) added._new = false;
         }, 2000);
       } catch (error) {
@@ -425,9 +496,7 @@ export default {
           })
         );
 
-        this.localIngredients = this.localIngredients.filter(
-          (i) => i.id !== ingredient.id
-        );
+        this.localIngredients = this.localIngredients.filter((i) => i.id !== ingredient.id);
       } catch (error) {
         console.error("Error deleting ingredient:", error);
         ingredient._deleting = false;
@@ -516,11 +585,9 @@ export default {
           formData.append("image", this.newDirection.image);
         }
 
-        const response = await axios.post(
-          this.route("api.directions.store", { recipe: this.recipe.id }),
-          formData,
-          { headers: { "Content-Type": "multipart/form-data" } }
-        );
+        const response = await axios.post(this.route("api.directions.store", { recipe: this.recipe.id }), formData, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
 
         this.localDirections.push({ ...response.data, _new: true });
         this.newDirection = {
@@ -532,9 +599,7 @@ export default {
 
         // Remove _new flag after a moment
         setTimeout(() => {
-          const added = this.localDirections.find(
-            (d) => d.id === response.data.id
-          );
+          const added = this.localDirections.find((d) => d.id === response.data.id);
           if (added) added._new = false;
         }, 2000);
       } catch (error) {
@@ -554,9 +619,7 @@ export default {
           })
         );
 
-        this.localDirections = this.localDirections.filter(
-          (d) => d.id !== direction.id
-        );
+        this.localDirections = this.localDirections.filter((d) => d.id !== direction.id);
       } catch (error) {
         console.error("Error deleting direction:", error);
         direction._deleting = false;
@@ -588,9 +651,7 @@ export default {
       this.deletingRecipe = true;
 
       try {
-        await axios.delete(
-          this.route("api.recipes.delete", { recipe: this.recipe.id })
-        );
+        await axios.delete(this.route("api.recipes.delete", { recipe: this.recipe.id }));
         window.location.href = this.route("recipes.index");
       } catch (error) {
         console.error("Error deleting recipe:", error);
@@ -630,7 +691,25 @@ table td {
 table th {
   font-weight: 600;
 }
+table td {
+  color: #d1d5db;
+}
 .handle {
   cursor: move;
+}
+:deep(.dark-input .p-inputtext) {
+  background-color: #1f2937;
+  border-color: #4b5563;
+  color: white;
+}
+:deep(.dark-input .p-select) {
+  background-color: #1f2937;
+  border-color: #4b5563;
+  color: white;
+}
+:deep(.dark-input .p-textarea) {
+  background-color: #1f2937;
+  border-color: #4b5563;
+  color: white;
 }
 </style>

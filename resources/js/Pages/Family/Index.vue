@@ -1,53 +1,39 @@
 <template>
   <Head title="Family" />
   <div>
-    <h1 class="mb-3 text-5xl">Family</h1>
+    <h1 class="mb-3 text-5xl text-white">Family</h1>
 
     <!-- Not in a family -->
     <div v-if="!inFamily" class="space-y-6">
-      <div class="text-gray-600">You are not currently part of a family.</div>
+      <div class="text-gray-300">You are not currently part of a family.</div>
 
       <div class="space-y-4">
         <div>
-          <Button
-            @click="createFamily"
-            label="Create Family"
-            :loading="loading"
-          />
+          <Button @click="createFamily" label="Create Family" :loading="loading" />
         </div>
 
-        <div class="border-t my-6"></div>
+        <div class="border-t my-6 border-gray-700"></div>
 
-        <div class="text-lg font-semibold">Or join an existing family</div>
+        <div class="text-lg font-semibold text-white">Or join an existing family</div>
         <div class="flex gap-2">
-          <InputText v-model="joinCode" placeholder="Enter join code" class="w-48" />
-          <Button
-            @click="joinFamily"
-            label="Join Family"
-            :loading="loading"
-            :disabled="!joinCode"
-          />
+          <InputText v-model="joinCode" placeholder="Enter join code" class="w-48 dark-input" />
+          <Button @click="joinFamily" label="Join Family" :loading="loading" :disabled="!joinCode" />
         </div>
       </div>
     </div>
 
     <!-- In a family -->
     <div v-else class="space-y-6">
-      <div class="bg-blue-50 border border-blue-200 rounded p-4">
+      <div class="bg-gray-800 border border-gray-700 rounded p-4 text-white">
         <div class="text-lg font-semibold mb-2">Invite Code</div>
         <div class="flex items-center gap-2">
-          <code class="text-2xl font-mono bg-white px-3 py-2 rounded border">{{ family.join_code }}</code>
-          <Button
-            @click="copyJoinCode"
-            icon="pi pi-copy"
-            text
-            size="small"
-          />
+          <code class="text-2xl font-mono bg-gray-700 px-3 py-2 rounded border">{{ family.join_code }}</code>
+          <Button @click="copyJoinCode" icon="pi pi-copy" text size="small" />
         </div>
         <div v-if="copied" class="text-green-600 text-sm mt-1">Copied!</div>
       </div>
 
-      <div>
+      <div class="text-white">
         <div class="text-lg font-semibold mb-2">Members</div>
         <div class="border rounded">
           <div
@@ -61,21 +47,13 @@
             </div>
             <div v-if="member.id === currentUserId" class="text-sm text-gray-500">
               (you)
+              <Button class="ml-2" @click="leaveFamily" label="Leave Family" severity="danger" :loading="loading" />
             </div>
           </div>
         </div>
       </div>
 
-      <div class="border-t my-6"></div>
-
-      <div>
-        <Button
-          @click="leaveFamily"
-          label="Leave Family"
-          severity="danger"
-          :loading="loading"
-        />
-      </div>
+      <div></div>
     </div>
   </div>
 </template>
@@ -173,3 +151,11 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+:deep(.dark-input .p-inputtext) {
+  background-color: #1f2937;
+  border-color: #4b5563;
+  color: white;
+}
+</style>

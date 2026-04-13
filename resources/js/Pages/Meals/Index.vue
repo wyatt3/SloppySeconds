@@ -1,16 +1,16 @@
 <template>
   <Head title="Meal Planner" />
   <div>
-    <h1 class="mb-3 text-5xl">Meal Planner</h1>
+    <h1 class="mb-3 text-5xl text-white">Meal Planner</h1>
 
     <!-- Week Navigation -->
     <div class="flex items-center justify-between mb-4">
       <div class="flex items-center gap-2">
         <Button @click="previousWeek" icon="pi pi-chevron-left" text />
-        <span class="text-xl font-semibold min-w-64 text-center">{{ weekRangeDisplay }}</span>
+        <span class="text-xl font-semibold min-w-64 text-center text-white">{{ weekRangeDisplay }}</span>
         <Button @click="nextWeek" icon="pi pi-chevron-right" text />
       </div>
-      <Button @click="goToToday" label="Today" severity="secondary" size="small" />
+      <Button @click="goToToday" label="Go to Today" size="small" />
     </div>
 
     <!-- 7-Day Grid -->
@@ -18,13 +18,13 @@
       <div
         v-for="day in weekDays"
         :key="day.dateString"
-        class="day-column border rounded p-3"
-        :class="{ 'border-blue-400 bg-blue-50': day.isToday }"
+        class="day-column border border-gray-700 rounded p-3 bg-gray-800"
+        :class="{ 'border-emerald-500 bg-gray-700': day.isToday }"
       >
         <!-- Day Header -->
-        <div class="day-header text-center mb-3 pb-2 border-b">
-          <div class="text-sm text-gray-500">{{ day.dayName }}</div>
-          <div class="font-bold text-lg" :class="{ 'text-blue-600': day.isToday }">
+        <div class="day-header text-center mb-3 pb-2 border-b border-gray-700">
+          <div class="text-sm text-gray-400">{{ day.dayName }}</div>
+          <div class="font-bold text-lg text-white" :class="{ 'text-emerald-400': day.isToday }">
             {{ day.dateDisplay }}
           </div>
         </div>
@@ -34,9 +34,9 @@
           <div
             v-for="recipe in getMealRecipes(day.dateString)"
             :key="recipe.id"
-            class="recipe-card bg-white border rounded p-2 text-sm relative group shadow-sm"
+            class="recipe-card bg-gray-700 border border-gray-600 rounded p-2 text-sm relative group shadow-sm"
           >
-            <a :href="route('recipe.show', { recipe: recipe.id })" class="hover:text-blue-600">
+            <a :href="route('recipe.show', { recipe: recipe.id })" class="text-white hover:text-emerald-400">
               {{ recipe.name }}
             </a>
             <span class="text-xs text-gray-400 block">{{ recipe.type }}</span>
@@ -64,27 +64,25 @@
     </div>
 
     <!-- Recipe Selector Dialog -->
-    <Dialog
-      v-model:visible="showRecipeSelector"
-      header="Add Recipe to Meal"
-      :modal="true"
-      :style="{ width: '500px' }"
-    >
-      <div class="mb-3">
+    <Dialog v-model:visible="showRecipeSelector" header="Add Recipe to Meal" :modal="true" :style="{ width: '500px' }">
+      <div class="mb-3 pt-1">
         <FloatLabel variant="on">
-          <InputText v-model="recipeSearch" class="w-full" />
+          <InputText v-model="recipeSearch" class="w-full dark-input" />
           <label>Search recipes...</label>
         </FloatLabel>
       </div>
-      <div v-if="filteredRecipes.length > 0" class="recipe-list max-h-80 overflow-y-auto border rounded">
+      <div
+        v-if="filteredRecipes.length > 0"
+        class="recipe-list max-h-80 overflow-y-auto border border-gray-700 rounded bg-gray-800"
+      >
         <div
           v-for="recipe in filteredRecipes"
           :key="recipe.id"
           @click="selectRecipe(recipe)"
-          class="p-3 hover:bg-gray-100 cursor-pointer border-b last:border-b-0"
+          class="p-3 hover:bg-gray-700 cursor-pointer border-b border-gray-700 last:border-b-0"
         >
-          <div class="font-medium">{{ recipe.name }}</div>
-          <div class="text-sm text-gray-500">{{ recipe.type }}</div>
+          <div class="font-medium text-white">{{ recipe.name }}</div>
+          <div class="text-sm text-gray-400">{{ recipe.type }}</div>
         </div>
       </div>
       <div v-else class="text-center py-8 text-gray-500">
@@ -167,11 +165,7 @@ export default {
     filteredRecipes() {
       if (!this.recipeSearch) return this.recipes;
       const search = this.recipeSearch.toLowerCase();
-      return this.recipes.filter(
-        (r) =>
-          r.name.toLowerCase().includes(search) ||
-          r.type.toLowerCase().includes(search)
-      );
+      return this.recipes.filter((r) => r.name.toLowerCase().includes(search) || r.type.toLowerCase().includes(search));
     },
   },
   methods: {
@@ -251,12 +245,9 @@ export default {
       try {
         // If no meal exists for this date, create one first
         if (!meal) {
-          const createResponse = await axios.post(
-            this.route("api.meals.store"),
-            {
-              date: dateString,
-            }
-          );
+          const createResponse = await axios.post(this.route("api.meals.store"), {
+            date: dateString,
+          });
           meal = createResponse.data;
           meal.recipes = [];
           this.meals[dateString] = meal;
@@ -313,7 +304,6 @@ export default {
 }
 
 .day-column {
-  background-color: #fafafa;
   min-height: 200px;
 }
 
@@ -322,10 +312,15 @@ export default {
 }
 
 .recipe-card:hover {
-  background-color: #f5f5f5;
+  background-color: #374151;
 }
 
-/* Responsive: Stack days on smaller screens */
+:deep(.dark-input .p-inputtext) {
+  background-color: #1f2937;
+  border-color: #4b5563;
+  color: white;
+}
+
 @media (max-width: 1024px) {
   .week-grid {
     grid-template-columns: repeat(4, 1fr);

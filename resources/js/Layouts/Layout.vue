@@ -58,19 +58,19 @@
               leave-to-class="transform opacity-0 scale-95"
             >
               <MenuItems
-                class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black/5 focus:outline-hidden"
+                class="bg-gray-800 absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md text-white py-1 shadow-lg ring-1 ring-black/5 focus:outline-hidden"
               >
                 <MenuItem v-slot="{ active }">
                   <a
                     :href="route('family.index')"
-                    :class="[active ? 'bg-gray-100 outline-hidden' : '', 'block px-4 py-2 text-sm text-gray-700']"
+                    :class="[active ? 'bg-gray-700 outline-hidden' : '', 'block px-4 py-2 text-sm text-white']"
                     >Your Family</a
                   >
                 </MenuItem>
                 <MenuItem v-slot="{ active }">
                   <a
                     href="#"
-                    :class="[active ? 'bg-gray-100 outline-hidden' : '', 'block px-4 py-2 text-sm text-gray-700']"
+                    :class="[active ? 'bg-gray-700 outline-hidden' : '', 'block px-4 py-2 text-sm text-white']"
                     >Account</a
                   >
                 </MenuItem>
@@ -78,8 +78,8 @@
                   <button
                     @click="logout"
                     :class="[
-                      active ? 'bg-gray-100 outline-hidden' : '',
-                      'block px-4 py-2 text-sm text-gray-700 w-full text-left',
+                      active ? 'bg-gray-700 outline-hidden' : '',
+                      'block px-4 py-2 text-sm text-white w-full text-left',
                     ]"
                   >
                     Sign out

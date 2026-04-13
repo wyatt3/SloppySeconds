@@ -1,35 +1,35 @@
 <template>
   <Head title="Recipes" />
   <div>
-    <h1 class="mb-3 text-5xl">Recipes</h1>
+    <h1 class="mb-3 text-5xl text-white">Recipes</h1>
     <Button class="mb-2" as="a" :href="route('recipes.create')">
       <i class="pi pi-plus"></i>
       Add A New Recipe
     </Button>
     <div class="filters mb-3 flex gap-2">
       <FloatLabel variant="on">
-        <InputText v-model="search" />
+        <InputText v-model="search" class="dark-input" />
         <label>Search</label>
       </FloatLabel>
       <FloatLabel variant="on">
-        <Select v-model="typeFilter" :options="allTypes" placeholder="Recipe Type" />
+        <Select v-model="typeFilter" :options="allTypes" dark placeholder="Recipe Type" class="dark-input" />
         <label>Recipe Type</label>
       </FloatLabel>
     </div>
     <table class="recipe-table">
       <template v-for="type in Object.keys(groupedRecipes)" :key="type">
-        <thead class="bg-gray-200">
+        <thead class="bg-gray-700">
           <tr>
-            <th colspan="100%" class="text-left px-5 py-2">{{ type }}s</th>
+            <th colspan="100%" class="text-left px-5 py-2 text-white">{{ type }}s</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="recipe in groupedRecipes[type]" :key="recipe.id">
+          <tr v-for="recipe in groupedRecipes[type]" :key="recipe.id" class="hover:bg-gray-800">
             <td class="px-5 py-2">
-              <a :href="route('recipe.show', recipe.id)"><i class="pi pi-eye"></i></a>
+              <a class="text-white" :href="route('recipe.show', recipe.id)"><i class="pi pi-eye"></i></a>
             </td>
-            <td class="px-5 py-2">{{ recipe.name }}</td>
-            <td class="px-5 py-2">{{ recipe.description }}</td>
+            <td class="px-5 py-2 text-white">{{ recipe.name }}</td>
+            <td class="px-5 py-2 text-gray-400">{{ recipe.description }}</td>
           </tr>
         </tbody>
       </template>
@@ -96,5 +96,15 @@ export default {
 <style scoped>
 .recipe-table {
   width: 100%;
+}
+:deep(.dark-input .p-inputtext) {
+  background-color: #1f2937;
+  border-color: #4b5563;
+  color: white;
+}
+:deep(.dark-input .p-select) {
+  background-color: #1f2937;
+  border-color: #4b5563;
+  color: white;
 }
 </style>

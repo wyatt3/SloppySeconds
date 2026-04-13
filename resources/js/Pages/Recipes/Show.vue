@@ -6,7 +6,7 @@
     <!-- Header with Title and Actions -->
     <div class="flex justify-between items-start mt-3 mb-3">
       <div>
-        <h1 class="text-5xl mb-1">{{ recipe.name }}</h1>
+        <h1 class="text-5xl mb-1 text-white">{{ recipe.name }}</h1>
         <span class="text-sm text-gray-400">{{ recipe.type }}</span>
       </div>
       <div class="flex gap-2">
@@ -15,12 +15,12 @@
       </div>
     </div>
 
-    <p class="text-gray-600 mb-5">{{ recipe.description }}</p>
+    <p class="text-gray-300 mb-5">{{ recipe.description }}</p>
 
     <!-- Ingredients Section -->
-    <h2 class="text-3xl mb-3">Ingredients</h2>
+    <h2 class="text-3xl mb-3 text-white">Ingredients</h2>
     <ul v-if="recipe.orderedIngredients.length > 0" class="ingredient-list mb-5">
-      <li v-for="ingredient in recipe.orderedIngredients" :key="ingredient.id" class="py-2 border-b border-gray-200 flex justify-between">
+      <li v-for="ingredient in recipe.orderedIngredients" :key="ingredient.id" class="py-2 border-b border-gray-700 flex justify-between text-gray-300">
         <span>{{ ingredient.name }}</span>
         <span class="text-gray-500">{{ formatAmount(ingredient.amount) }} {{ ingredient.unit }}</span>
       </li>
@@ -28,16 +28,16 @@
     <p v-else class="text-gray-500 mb-5">No ingredients listed.</p>
 
     <!-- Directions Section -->
-    <h2 class="text-3xl mb-3">Directions</h2>
+    <h2 class="text-3xl mb-3 text-white">Directions</h2>
     <ol v-if="recipe.orderedDirections.length > 0" class="direction-list mb-5">
       <li v-for="(direction, index) in recipe.orderedDirections" :key="direction.id" class="mb-4">
         <div class="flex gap-3">
-          <div class="step-number flex-shrink-0 w-8 h-8 bg-gray-800 text-white rounded-full flex items-center justify-center font-bold">
+          <div class="step-number flex-shrink-0 w-8 h-8 bg-emerald-600 text-white rounded-full flex items-center justify-center font-bold">
             {{ index + 1 }}
           </div>
           <div class="flex-1">
-            <div v-if="direction.title" class="font-semibold mb-1">{{ direction.title }}</div>
-            <p class="text-gray-700">{{ direction.content }}</p>
+            <div v-if="direction.title" class="font-semibold mb-1 text-white">{{ direction.title }}</div>
+            <p class="text-gray-300">{{ direction.content }}</p>
             <img v-if="direction.image" :src="direction.imagePath" class="mt-2 max-w-sm rounded" />
           </div>
         </div>

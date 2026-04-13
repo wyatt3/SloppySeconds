@@ -60,10 +60,10 @@ class IngredientController extends Controller
         foreach ($ingredients as $ingredient) {
             /** @var int $id */
             $id = $ingredient['id'];
-            /** @var Ingredient $ingredient */
-            $ingredient = Ingredient::findOrFail($id);
             /** @var int $order */
             $order = $ingredient['order'];
+            /** @var Ingredient $ingredient */
+            $ingredient = Ingredient::findOrFail($id);
             $this->ingredientService->updateIngredientOrder($ingredient, $order);
         }
         return response()->noContent();

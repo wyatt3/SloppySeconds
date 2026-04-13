@@ -1,7 +1,12 @@
 <template>
   <div class="container">
     <Head :title="recipe.name" />
-    <img class="header-img" :src="recipe.imagePath" />
+    <div v-if="recipe.imagePath && !recipeImageFailed" class="header-img-container">
+      <img class="header-img" :src="recipe.imagePath" @error="recipeImageFailed = true" />
+    </div>
+    <div v-else class="header-img-container header-img-placeholder">
+      <span>No Image</span>
+    </div>
 
     <!-- Header with Title and Actions -->
     <div class="flex justify-between items-start mt-3 mb-3">
@@ -50,7 +55,12 @@
           <div class="flex-1">
             <div v-if="direction.title" class="font-semibold mb-1 text-white">{{ direction.title }}</div>
             <p class="text-gray-300">{{ direction.content }}</p>
-            <img v-if="direction.image" :src="direction.imagePath" class="mt-2 max-w-sm rounded" />
+            <div v-if="direction.image && !directionImageFailed[direction.id]" class="mt-2">
+              <img :src="direction.imagePath" class="max-w-sm rounded" @error="() => directionImageFailed[direction.id] = true" />
+            </div>
+            <div v-else-if="direction.image" class="mt-2 max-w-sm rounded bg-gray-700 h-32 flex items-center justify-center">
+              <span class="text-gray-500">No Image</span>
+            </div>
           </div>
         </div>
       </li>
@@ -96,6 +106,8 @@ export default {
       selectedDate: new Date(),
       addingToMeal: false,
       mealAddedMessage: "",
+      recipeImageFailed: false,
+      directionImageFailed: {},
     };
   },
   methods: {
@@ -171,12 +183,27 @@ export default {
   }
 }
 
+.header-img-container {
+  width: 100%;
+  max-height: 400px;
+  margin: auto;
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
 .header-img {
   width: 100%;
   max-height: 400px;
   object-fit: cover;
-  margin: auto;
-  border-radius: 0.5rem;
+}
+
+.header-img-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #374151;
+  min-height: 200px;
+  color: #9ca3af;
 }
 
 .ingredient-list {

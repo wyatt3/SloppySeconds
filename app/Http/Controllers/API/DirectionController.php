@@ -68,10 +68,10 @@ class DirectionController extends Controller
         foreach ($directions as $direction) {
             /** @var int $id */
             $id = $direction['id'];
-            /** @var Direction $direction */
-            $direction = Direction::findOrFail($id);
             /** @var int $order */
             $order = $direction['order'];
+            /** @var Direction $direction */
+            $direction = Direction::findOrFail($id);
             $this->directionService->updateDirectionOrder($direction, $order);
         }
         return response()->noContent();

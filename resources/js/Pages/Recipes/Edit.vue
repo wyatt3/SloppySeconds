@@ -405,6 +405,34 @@ export default {
           headers: { "Content-Type": "multipart/form-data" },
         });
 
+        // Save ingredient order (only if there are ingredients)
+        if (this.localIngredients.length > 0) {
+          const ingredientOrders = this.localIngredients.map((ingredient, index) => ({
+            id: ingredient.id,
+            order: index,
+          }));
+          await axios.put(
+            this.route("api.ingredients.update-orders", {
+              recipe: this.recipe.id,
+            }),
+            { ingredients: ingredientOrders }
+          );
+        }
+
+        // Save direction order (only if there are directions)
+        if (this.localDirections.length > 0) {
+          const directionOrders = this.localDirections.map((direction, index) => ({
+            id: direction.id,
+            order: index,
+          }));
+          await axios.put(
+            this.route("api.directions.update-orders", {
+              recipe: this.recipe.id,
+            }),
+            { directions: directionOrders }
+          );
+        }
+
         // Update original form to reflect saved state
         this.originalForm = { ...this.form };
         this.newImage = null;
@@ -503,21 +531,7 @@ export default {
       }
     },
     async onIngredientReorder() {
-      const orders = this.localIngredients.map((ingredient, index) => ({
-        id: ingredient.id,
-        order: index,
-      }));
-
-      try {
-        await axios.put(
-          this.route("api.ingredients.update-orders", {
-            recipe: this.recipe.id,
-          }),
-          { ingredients: orders }
-        );
-      } catch (error) {
-        console.error("Error reordering ingredients:", error);
-      }
+      // Just update local order - will be saved with recipe
     },
 
     // === Direction Management ===
@@ -626,21 +640,7 @@ export default {
       }
     },
     async onDirectionReorder() {
-      const orders = this.localDirections.map((direction, index) => ({
-        id: direction.id,
-        order: index,
-      }));
-
-      try {
-        await axios.put(
-          this.route("api.directions.update-orders", {
-            recipe: this.recipe.id,
-          }),
-          { directions: orders }
-        );
-      } catch (error) {
-        console.error("Error reordering directions:", error);
-      }
+      // Just update local order - will be saved with recipe
     },
 
     // === Delete Recipe ===

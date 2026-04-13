@@ -158,7 +158,7 @@ export default {
       this.checkedItems = {};
     },
     printList() {
-      return;
+      window.print();
     },
     // Date preset methods
     setThisWeek() {
@@ -217,14 +217,27 @@ export default {
 
 /* Print-friendly styles */
 @media print {
+  body * {
+    visibility: hidden;
+  }
+
+  .shopping-list-container,
+  .shopping-list-container * {
+    visibility: visible;
+  }
+
+  .shopping-list-container {
+    position: absolute;
+    left: 0;
+    top: 0;
+    max-width: 100%;
+    width: 100%;
+  }
+
   .date-selector,
   .presets,
   .list-header {
     display: none !important;
-  }
-
-  .shopping-list-container {
-    max-width: 100%;
   }
 
   .ingredient-item.opacity-50 {
@@ -234,6 +247,24 @@ export default {
   h1 {
     font-size: 24px !important;
     margin-bottom: 1rem !important;
+  }
+
+  .shopping-list-container {
+    background: white;
+    color: black;
+  }
+
+  .ingredient-item {
+    border-bottom: 1px solid #ccc !important;
+  }
+
+  .ingredient-name,
+  h1 {
+    color: black !important;
+  }
+
+  .ingredient-amount {
+    color: #333 !important;
   }
 }
 </style>

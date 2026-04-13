@@ -34,7 +34,7 @@
     </Message>
     <FloatLabel variant="in">
       <InputText class="w-full" type="text" v-model="joinCode" @input="joinCodeErrors = []" />
-      <label>Fa Code (Optional)</label>
+      <label>Family Code (Optional)</label>
     </FloatLabel>
     <Message
       v-for="error in joinCodeErrors"

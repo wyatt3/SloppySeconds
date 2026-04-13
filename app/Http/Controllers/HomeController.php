@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -18,8 +19,11 @@ class HomeController extends Controller
      *
      * @return \Inertia\Response|\Inertia\ResponseFactory
      */
-    public function index(): \Inertia\Response|\Inertia\ResponseFactory
+    public function index(): \Inertia\Response|\Inertia\ResponseFactory|\Illuminate\Http\RedirectResponse
     {
+        if (Auth::check()) {
+            return redirect()->route('recipes.index');
+        }
         return inertia('welcome');
     }
 }

@@ -9,7 +9,7 @@
     @inertiaHead
 </head>
 
-<body>
+<body class="min-h-screen bg-gradient-to-b from-gray-900 to-gray-800">
     <main class="pb-4">
         @inertia
     </main>
